@@ -1,0 +1,28 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "moody",
+  "version": "0.1.0",
+  "description": "Search, review, import, organize, and annotate a local Moody visual inspiration library through Moody Agent Access.",
+  "author": {
+    "name": "Nikhil Yadav"
+  },
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Moody",
+        "shortDescription": "Work with your local visual inspiration library",
+        "longDescription": "Search and visually review your local Moody library, import explicit media and public links, save items to Collections, and add approved captions or tags through Moody's local Agent Access MCP server.",
+        "developerName": "Nikhil Yadav",
+        "category": "Productivity",
+        "capabilities": ["Interactive"],
+        "composerIcon": "./assets/logo.png",
+        "logo": "./assets/logo.png",
+        "defaultPrompt": [
+          "Show me inspiration for a dark payment checkout in Moody.",
+          "Find my most recent Moody captures and open them as Agent Results.",
+          "Help me import inspiration into Moody and organize it into a Collection."
+        ]
+      }
+    }
+  }
+}

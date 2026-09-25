@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "moody": {
+      "type": "stdio",
+      "command": "/Applications/Moody.app/Contents/Helpers/moody-mcp"
+    }
+  }
+}

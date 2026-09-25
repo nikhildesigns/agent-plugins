@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "localeditor": {
+      "type": "stdio",
+      "command": "/Applications/LocalEditor.app/Contents/Helpers/localeditor-mcp"
+    }
+  }
+}

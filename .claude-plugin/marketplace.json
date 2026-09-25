@@ -1,0 +1,21 @@
+{
+  "name": "nikhildesigns-agent-plugins",
+  "owner": {
+    "name": "Nikhil Yadav"
+  },
+  "metadata": {
+    "description": "Local-first agent plugins for Nikhil Yadav's macOS apps."
+  },
+  "plugins": [
+    {
+      "name": "moody",
+      "source": "./plugins/moody",
+      "description": "Search, review, import, organize, and annotate a local Moody visual inspiration library through Moody Agent Access."
+    },
+    {
+      "name": "localeditor",
+      "source": "./plugins/localeditor",
+      "description": "Work with approved LocalEditor Projects and Scratchpads through LocalEditor Agent Access."
+    }
+  ]
+}

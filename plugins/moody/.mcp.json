@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "moody": {
+      "type": "stdio",
+      "command": "/Applications/Moody.app/Contents/Helpers/moody-mcp"
+    }
+  }
+}

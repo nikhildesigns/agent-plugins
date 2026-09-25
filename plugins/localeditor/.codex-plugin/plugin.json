@@ -1,0 +1,30 @@
+{
+  "name": "localeditor",
+  "version": "0.1.0",
+  "description": "Work with approved LocalEditor Projects and Scratchpads through LocalEditor Agent Access.",
+  "author": {
+    "name": "Nikhil Yadav"
+  },
+  "homepage": "https://localeditor.app",
+  "repository": "https://github.com/nikhildesigns/agent-plugins",
+  "license": "MIT",
+  "keywords": ["localeditor", "markdown", "projects", "scratchpads", "mcp", "macos"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "LocalEditor",
+    "shortDescription": "Work safely with local Projects and Scratchpads",
+    "longDescription": "Discover, read, create, update, and open documents in LocalEditor Projects and Scratchpads through explicit local Agent Access permissions, revision-checked writes, and secret-file protections.",
+    "developerName": "Nikhil Yadav",
+    "category": "Productivity",
+    "capabilities": ["Interactive"],
+    "websiteURL": "https://localeditor.app",
+    "composerIcon": "./assets/logo.png",
+    "logo": "./assets/logo.png",
+    "defaultPrompt": [
+      "Show me the Projects available through LocalEditor Agent Access.",
+      "Create a LocalEditor Scratchpad for these notes.",
+      "Help me revise a document in my LocalEditor Project."
+    ]
+  }
+}

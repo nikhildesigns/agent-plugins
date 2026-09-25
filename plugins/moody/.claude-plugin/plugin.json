@@ -1,0 +1,11 @@
+{
+  "name": "moody",
+  "version": "0.1.0",
+  "description": "Search, review, import, organize, and annotate a local Moody visual inspiration library through Moody Agent Access.",
+  "author": {
+    "name": "Nikhil Yadav"
+  },
+  "homepage": "https://usemoody.com",
+  "repository": "https://github.com/nikhildesigns/agent-plugins",
+  "keywords": ["moody", "inspiration", "moodboard", "design", "mcp", "macos"]
+}

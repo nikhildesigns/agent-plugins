@@ -1,0 +1,11 @@
+{
+  "name": "localeditor",
+  "version": "0.1.0",
+  "description": "Work with approved LocalEditor Projects and Scratchpads through LocalEditor Agent Access.",
+  "author": {
+    "name": "Nikhil Yadav"
+  },
+  "homepage": "https://localeditor.app",
+  "repository": "https://github.com/nikhildesigns/agent-plugins",
+  "keywords": ["localeditor", "markdown", "projects", "scratchpads", "mcp", "macos"]
+}

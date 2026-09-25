@@ -1,0 +1,32 @@
+{
+  "name": "nikhildesigns-agent-plugins",
+  "interface": {
+    "displayName": "Nikhil's Agent Plugins"
+  },
+  "plugins": [
+    {
+      "name": "moody",
+      "source": {
+        "source": "local",
+        "path": "./plugins/moody"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "localeditor",
+      "source": {
+        "source": "local",
+        "path": "./plugins/localeditor"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
