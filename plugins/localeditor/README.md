@@ -26,6 +26,14 @@ Before using it:
 The plugin requires a LocalEditor license or account-backed trial that includes
 Agent Access. LocalEditor remains the authority for every permission check.
 
+## What to ask
+
+The `use-localeditor` skill teaches four workflows: reading project context
+(specs, briefs, decisions) from a Project, opening finished work in LocalEditor
+for review, handing checklists and test cases back and forth through a
+Scratchpad, and searching or summarizing notes. Examples are on
+[localeditor.app/agents](https://localeditor.app/agents.html).
+
 ## Claude Code
 
 Add the repository marketplace and install the plugin:
