@@ -1,6 +1,6 @@
 {
   "name": "localeditor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Work with approved LocalEditor Projects and Scratchpads through LocalEditor Agent Access.",
   "author": {
     "name": "Nikhil Yadav"
@@ -22,9 +22,9 @@
     "composerIcon": "./assets/logo.png",
     "logo": "./assets/logo.png",
     "defaultPrompt": [
-      "Show me the Projects available through LocalEditor Agent Access.",
-      "Create a LocalEditor Scratchpad for these notes.",
-      "Help me revise a document in my LocalEditor Project."
+      "Read the design brief in my LocalEditor Project before you start.",
+      "Put the test steps for this change in a LocalEditor Scratchpad.",
+      "Read my notes on the checklist and fix what failed."
     ]
   }
 }

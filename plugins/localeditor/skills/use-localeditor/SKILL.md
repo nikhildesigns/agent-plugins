@@ -1,6 +1,6 @@
 ---
 name: use-localeditor
-description: Discover, read, create, update, or open documents in the user's approved LocalEditor Projects and Scratchpads through LocalEditor Agent Access.
+description: Find, read, create, update, or open documents in the user's approved LocalEditor Projects and Scratchpads through LocalEditor Agent Access. Use when the user mentions LocalEditor, a Scratchpad, or a Project; asks you to read project context such as a spec, brief, plan, or decisions doc; asks to open or review your work in LocalEditor; wants a checklist, next tasks, or test cases written to a Scratchpad or read back with their notes; or asks to search or summarize their local notes.
 ---
 
 # Use LocalEditor
@@ -8,6 +8,48 @@ description: Discover, read, create, update, or open documents in the user's app
 Use LocalEditor as a permission-scoped local document workspace. Keep Projects
 and Scratchpads distinct, preserve the application's security boundaries, and
 use revision-checked writes for existing documents.
+
+## Common workflows
+
+### Use project context
+
+When the user refers to a spec, brief, plan, decisions log, or other reference
+document that is not already in your working directory, look for it in
+LocalEditor: `list_projects`, choose the Project the user named,
+`list_project_files`, then `read_document`. Match by Project name and filename,
+and ask when several files plausibly match. Say which files you read before
+acting on them, rather than asking the user to paste the context.
+
+### Open work for review
+
+After you write a plan, spec, report, HTML page, or other document the user
+should read, offer to open it with `open_in_localeditor`, or open it directly
+when the user asked. It accepts any existing absolute path, including files you
+wrote without LocalEditor tools. Project writes through `write_document` do not
+open LocalEditor on their own.
+
+### Hand work back and forth with a Scratchpad
+
+- To hand the user a checklist, next tasks, or test cases, call
+  `create_scratchpad` with a descriptive title and Markdown task items
+  (`- [ ] …`): one item per check, each with short steps and the expected
+  result. LocalEditor opens it for the user to review.
+- When the user says they have marked it up ("read my notes on the checklist"),
+  call `list_scratchpads`, find it by title (ask if ambiguous), and
+  `read_document`. Treat `- [x]` as done or passed, `- [ ]` as open or failed,
+  and any text the user added under an item as their feedback. Summarize what
+  passed, what failed, and their notes, then act on the failures.
+- To add to an existing Scratchpad, read it first and update with its revision.
+  Never drop the user's notes or change their check marks.
+
+### Search and summarize notes
+
+When the user asks about their notes ("what did I write about…", "summarize my
+notes on…"), list the relevant Project's files, narrow candidates by filename
+and folder, and read only the likely matches rather than the whole Project. Name
+the files you drew from. If filenames are not enough to narrow the search, say
+roughly how many files you would need to read and ask before reading widely.
+Save the result to a Scratchpad only when the user asks.
 
 ## Prerequisites and recovery
 
