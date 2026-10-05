@@ -1,6 +1,6 @@
 ---
 name: compose-localeditor-page
-description: Compose a LocalEditor Markdown Page or Scratchpad with imported local images and embedded child Pages or Canvases, or inspect the contents of those children. Use for inserting an image into a LocalEditor note, creating a linked subpage/subcanvas, or reading a parent's embedded documents. Plain document edits and drawing the Canvas itself have separate skills.
+description: Compose a LocalEditor Markdown Page or Scratchpad with imported local images and embedded child Pages or Canvases, or inspect the contents of those children. Use for LocalEditor code-context hubs, component references, linked flow documentation, image insertion, child Pages/Canvases, or reading embedded documents. Plain document edits and drawing the Canvas itself have separate skills.
 ---
 
 # Compose a LocalEditor Page
@@ -16,11 +16,29 @@ links with a standard Markdown title marker. Images use ordinary image syntax.
 | Feature proposal | “Create a proposal with a wireframe Canvas and a detailed notes Page.” | Create the Markdown parent, add child Canvas/Page links with `create_embedded_document`, then populate each child; use the Canvas skill to draw the wireframe. |
 | Reference collection | “Add these local reference images to my design brief.” | Import images from an approved read scope, insert the returned relative image paths with revision-checked writes, and open the brief for review. |
 | System explainer | “Add an architecture diagram and a child Page explaining each component.” | Embed a Canvas for the diagram and a Markdown Page for the explanation; keep the parent's returned links intact. |
+| Component references | “Create a LocalEditor reference Page for the Button component, with subpages for props, variants, and accessibility.” | Inspect the relevant source, create the parent reference Page, and add child Pages with source-backed details and code-file links. |
+| Flow documentation | “Document sign-in, recovery, and sign-out with an index and a subpage for each flow.” | Read the implementation, create the flow index, then populate each child Page with entry points, steps, states, and edge cases; link related flows. |
+| Code-context hub | “Create a context Page for this feature linking its components, flows, and implementation notes.” | Build a concise parent overview and linked detail Pages so users and agents can read the overview first and open only the relevant details. |
 | Linked-document review | “Read this proposal and its linked Pages/Canvases, then summarize the open questions.” | Read the parent, resolve relevant marked links, read each child separately, and name the documents used in the summary. |
 
 Use child Canvases for editable drawings and Markdown image references for
 imported images. A child link does not include its contents in the parent read;
 inspect the relevant children explicitly.
+
+## Context around code
+
+Ground component and flow references in source inspected through an authorized
+code-reading capability. Include relevant source paths/symbols, component
+responsibilities and public APIs, flow entry points and states, edge cases, and
+confirmed decisions. Mark unresolved questions explicitly; filenames alone do
+not establish implementation behavior.
+
+Use a parent Page as the index and child Pages for focused details. Create and
+link them through `create_embedded_document`, then fill or revise their Markdown
+through revision-checked `write_document`. Link actual source files with ordinary
+Markdown links using paths relative to the reference file where practical.
+When asked to refresh references, reread the affected source and documents and
+update the relevant children while preserving unrelated notes and parent links.
 
 ## Locate the parent
 
