@@ -5,8 +5,8 @@ Access MCP helper installed at:
 
 `/Applications/LocalEditor.app/Contents/Helpers/localeditor-mcp`
 
-One directory serves two plugin formats and shares the same `use-localeditor`
-skill:
+One package serves Claude Code and Codex with the same three skills in
+`skills/`:
 
 | Client | Manifest | MCP config |
 | --- | --- | --- |
@@ -28,11 +28,38 @@ Agent Access. LocalEditor remains the authority for every permission check.
 
 ## What to ask
 
-The `use-localeditor` skill teaches four workflows: reading project context
-(specs, briefs, decisions) from a Project, opening finished work in LocalEditor
-for review, handing checklists and test cases back and forth through a
-Scratchpad, and searching or summarizing notes. Examples are on
+| Skill | When to use it | Example |
+| --- | --- | --- |
+| `use-localeditor` | Find, read, revise, or open documents; exchange Markdown Scratchpad checklists and notes. | “Read the design brief in my LocalEditor Project.” |
+| `draw-localeditor-canvas` | Create/edit `.lcv` Canvases with shapes, text, arrows, frames, groups, layers, and Pencil strokes. | “Draw a simple clover with Pencil on a LocalEditor Canvas Scratchpad.” |
+| `compose-localeditor-page` | Import an image, create a child Page/Canvas, or read embedded documents. | “Add this local image and a child Canvas to my LocalEditor note.” |
+
+Both clients can select the same skills from these requests. Claude Code also
+exposes explicit names such as `/localeditor:draw-localeditor-canvas`; Codex
+exposes the installed skills for explicit invocation through its skill picker.
+Mixed tasks can use more than one skill.
+
+The new workflows require an app/helper exposing `create_canvas_scratchpad`,
+`create_embedded_document`, and `import_image`. Plugin version 0.2.0 does not
+replace the native helper. If session tools are unavailable, first follow the
+[tool recovery guide](references/tool-recovery.md) for discovery and approved
+elevated access to the bundled MCP helper. Only a missing tool in the connected
+helper’s tool list establishes that an app/helper update is needed. Coordinate publishing this plugin version with that
+app release; a source checkout alone does not update installed clients.
+
+More document examples are on
 [localeditor.app/agents](https://localeditor.app/agents.html).
+
+## ChatGPT desktop and Codex
+
+```sh
+codex plugin marketplace add nikhildesigns/agent-plugins
+codex plugin add localeditor@nikhildesigns-agent-plugins
+```
+
+The Codex compatibility manifest points to `./skills/`, while the portable
+package uses the conventional root `skills/` directory. Both discover all
+three workflows from the same files.
 
 ## Claude Code
 

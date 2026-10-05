@@ -1,7 +1,7 @@
 {
   "name": "localeditor",
-  "version": "0.1.1",
-  "description": "Work with approved LocalEditor Projects and Scratchpads through LocalEditor Agent Access.",
+  "version": "0.2.0",
+  "description": "Work with approved LocalEditor documents, Canvases, images, and embedded Pages through Agent Access.",
   "author": {
     "name": "Nikhil Yadav"
   },

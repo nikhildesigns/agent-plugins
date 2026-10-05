@@ -15,7 +15,7 @@
     {
       "name": "localeditor",
       "source": "./plugins/localeditor",
-      "description": "Work with approved LocalEditor Projects and Scratchpads through LocalEditor Agent Access."
+      "description": "Work with approved LocalEditor documents, Canvases, images, and embedded Pages through Agent Access."
     }
   ]
 }

@@ -1,130 +1,88 @@
 ---
 name: use-localeditor
-description: Find, read, create, update, or open documents in the user's approved LocalEditor Projects and Scratchpads through LocalEditor Agent Access. Use when the user mentions LocalEditor, a Scratchpad, or a Project; asks you to read project context such as a spec, brief, plan, or decisions doc; asks to open or review your work in LocalEditor; wants a checklist, next tasks, or test cases written to a Scratchpad or read back with their notes; or asks to search or summarize their local notes.
+description: Find, read, create, revise, or open ordinary documents in approved LocalEditor Projects and Markdown Scratchpads. Use for LocalEditor project briefs, specs, notes, document review, or Scratchpad checklists and user feedback. Canvas drawing and Markdown composition with images or embedded Pages/Canvases have separate skills; a generic mention of a project alone does not call for LocalEditor.
 ---
 
 # Use LocalEditor
 
-Use LocalEditor as a permission-scoped local document workspace. Keep Projects
-and Scratchpads distinct, preserve the application's security boundaries, and
-use revision-checked writes for existing documents.
+Use the LocalEditor MCP tools available in the client; their full names may
+have a client-specific prefix. LocalEditor owns permissions and local files.
 
-## Common workflows
+## Example workflows
 
-### Use project context
+| Use case | Example request | Workflow |
+| --- | --- | --- |
+| Project brief | “Read the approved project notes and draft a feature brief.” | Discover the named Project, read relevant documents, then create the brief in the requested Project folder or a Markdown Scratchpad. |
+| Document review | “Review this spec and update its acceptance criteria.” | Read the spec and its revision, apply the requested changes, preserve unrelated content, and open the saved document for review. |
+| Testing and feedback | “Make a checklist for this change, then read my findings.” | Create one Scratchpad with checkbox checks and nested notes; later read it and summarize the user's marks and comments. |
 
-When the user refers to a spec, brief, plan, decisions log, or other reference
-document that is not already in your working directory, look for it in
-LocalEditor: `list_projects`, choose the Project the user named,
-`list_project_files`, then `read_document`. Match by Project name and filename,
-and ask when several files plausibly match. Say which files you read before
-acting on them, rather than asking the user to paste the context.
+For a visual exploration or a brief with linked sketches/images, combine this
+skill with the Canvas or composition skill below.
 
-### Open work for review
+## Discover and read
 
-After you write a plan, spec, report, HTML page, or other document the user
-should read, offer to open it with `open_in_localeditor`, or open it directly
-when the user asked. It accepts any existing absolute path, including files you
-wrote without LocalEditor tools. Project writes through `write_document` do not
-open LocalEditor on their own.
+- Discover approved Projects with `list_projects`, then use the exact returned
+  Project path with `list_project_files`. Follow pagination. Use
+  `list_scratchpads` for persistent Scratchpads.
+- Match the user's named Project and document; ask if several candidates fit.
+  Read likely matches with `read_document`, not the entire Project by default.
+  Name the documents used when summarizing or acting on their contents.
+- A listed filename is not proof of content access. Retain the returned
+  `revision` for edits. A remembered path does not establish current permission.
 
-### Hand work back and forth with a Scratchpad
+## Create or revise a document
 
-- To hand the user a checklist, next tasks, or test cases, call
-  `create_scratchpad` with a descriptive title and Markdown task items
-  (`- [ ] …`): one item per check, each with short steps and the expected
-  result. LocalEditor opens it for the user to review.
-- When the user says they have marked it up ("read my notes on the checklist"),
-  call `list_scratchpads`, find it by title (ask if ambiguous), and
-  `read_document`. Treat `- [x]` as done or passed, `- [ ]` as open or failed,
-  and any text the user added under an item as their feedback. Summarize what
-  passed, what failed, and their notes, then act on the failures.
-- To add to an existing Scratchpad, read it first and update with its revision.
-  Never drop the user's notes or change their check marks.
+- Follow the user's requested destination and existing authorization. If the
+  destination or intended change is ambiguous, resolve that before writing.
+- Create a Markdown Scratchpad with `create_scratchpad` (`title`, `content`).
+  Supply the body without duplicating the title heading: the tool adds it.
+- Create an ordinary supported Project text file with `write_document` using
+  `create: true` only when its parent directory already exists in a writable
+  Project. Never create a new Scratchpad using `write_document`.
+- For an existing document, `read_document` first, then `write_document` with
+  its absolute `path`, complete `content`, and `expectedRevision`. Preserve
+  frontmatter, unrelated content, and the user's notes and check marks.
+- On `revisionMismatch`, reread and reconcile the requested edit with the
+  intervening changes. Retry under the existing authorization; ask only when
+  reconciliation changes the intended result or creates a conflict.
 
-### Search and summarize notes
+For Canvas drawing, use `draw-localeditor-canvas` when available. For image
+imports or child Pages/Canvases in Markdown, use `compose-localeditor-page`.
 
-When the user asks about their notes ("what did I write about…", "summarize my
-notes on…"), list the relevant Project's files, narrow candidates by filename
-and folder, and read only the likely matches rather than the whole Project. Name
-the files you drew from. If filenames are not enough to narrow the search, say
-roughly how many files you would need to read and ask before reading widely.
-Save the result to a Scratchpad only when the user asks.
+## Scratchpad handoffs and feedback
 
-## Prerequisites and recovery
+When asked to hand over checks or tasks, create one descriptive Markdown
+Scratchpad for that work item. Use `- [ ]` items with short steps and expected
+behavior, and a nested line for the user's notes. Do not mix unrelated runs.
 
-- LocalEditor must be installed at `/Applications/LocalEditor.app` with a valid
-  license or account-backed trial that includes Agent Access.
-- **Settings → Agent Access → Allow MCP access** must be on. LocalEditor does
-  not need to remain open after setup.
-- **Full access** permits all Projects and Scratchpads. **Custom Access** grants
-  each Project and the combined Scratchpads scope No access, Read only, or Read
-  & write.
-- If a tool reports that access is disabled or unavailable, name the exact
-  requirement and ask the user to update LocalEditor. Do not bypass Agent
-  Access with direct filesystem reads or writes.
-- Retry once when an app handoff or helper connection may have failed
-  transiently. Preserve successful file creation even if an open request fails.
-
-## Discover before reading
-
-- Call `list_projects` to discover Projects currently allowed by Agent Access.
-- Call `list_project_files` with the exact returned Project path to discover
-  files. Respect pagination instead of assuming the first page is complete.
-- Call `list_scratchpads` to discover persistent Scratchpads when that scope is
-  allowed.
-- Do not infer access from a remembered path. Use the current tool results.
-- Listings may expose filenames, including secret filenames, but never secret
-  contents. Do not claim that a listed file is readable until `read_document`
-  succeeds.
-
-## Read and inspect documents
-
-- Call `read_document` only with an absolute path inside an approved Project or
-  Scratchpad scope.
-- Treat the returned `revision` as the version of the bytes you read. Retain it
-  for any proposed update to that document.
-- Secret files, unsupported or oversized documents, symlink escapes, and files
-  unavailable locally must remain unread. Do not work around these blocks.
-- Use `resolve_local_path` only for an explicit handoff to another separately
-  authorized local capability. It never authorizes access or returns content.
-
-## Create and update documents
-
-Before a write, state the exact destination and proposed change, and obtain the
-user's approval when the client does not already provide an equivalent write
-approval.
-
-- Use `create_scratchpad` for every new Scratchpad. Supply a useful title when
-  the user provided one; LocalEditor creates persistent Markdown and normally
-  opens its compact review window.
-- Use `write_document` to create an ordinary supported text document only when
-  its parent directory already exists inside a writable Project.
-- To update an existing Project or Scratchpad document, first call
-  `read_document`, then pass its latest `revision` as `expectedRevision` with
-  the full replacement content.
-- If a revision is stale, read the latest document, reconcile the changes with
-  the user's intent, and ask for approval again before retrying. Never overwrite
-  an intervening edit blindly.
-- Never use `write_document` to create a new Scratchpad.
+When the user asks you to read their findings, locate and read that Scratchpad.
+Interpret checked items with their notes: an unchecked item alone may mean it
+has not been tested. Summarize the findings and continue the authorized work.
+Preserve the user's marks and notes when updating the document.
 
 ## Open for review
 
-- Use `open_in_localeditor` when the user asks to see a document or when review
-  is a useful final step. This is an app handoff and does not return content.
-- A successful `create_scratchpad` may report `opened: false` with an
-  `openWarning`. Report that the file was created and separately explain that
-  LocalEditor could not be opened.
-- Do not describe an open request as proof that a write persisted; rely on the
-  write result and, when needed, a subsequent read.
+Use `open_in_localeditor` with an existing absolute path when the user asks to
+see a document or review is useful. It can hand off a file outside an approved
+content scope without authorizing reads or writes there. A new Scratchpad
+normally opens automatically. If its result has `opened: false`, report the
+created path and `openWarning`; do not recreate the successful file.
 
-## Safety boundaries
+## Access and recovery
 
-- Never read or write `.env` files, credentials, private keys, certificates, or
-  other paths LocalEditor classifies as secret.
-- Do not create folders, move, rename, or delete files. Those operations are
-  outside the current MCP contract.
-- Do not run shell commands through LocalEditor or imply it provides general
-  filesystem access.
-- Do not upload document content to a LocalEditor service. LocalEditor MCP is a
-  local `stdio` capability and LocalEditor remains the owner of its local state.
+If tools are missing from the session or helper startup is sandbox-blocked,
+follow [the shared tool recovery guide](../../references/tool-recovery.md) first.
+It covers discovery and approved elevated MCP access, including Codex.
+
+LocalEditor must be installed in `/Applications`, have an eligible license or
+trial, and have **Settings → Agent Access → Allow MCP access** enabled.
+Full access or Custom Access must grant the relevant Project/Scratchpads scope;
+content edits need Read & write. The app need not remain open after setup.
+
+Respect disabled access, secret-file, size, symlink, and unavailable cloud-file
+errors. State the reported requirement; never bypass a block with filesystem
+or shell access. `resolve_local_path` is a path-only handoff to a separately
+authorized capability, not permission to read content. The MCP bridge does not
+provide general folder creation, move, rename, delete, or shell operations.
+Retry a transient connection/app handoff once; preserve successful writes if
+opening fails. Do not upload content to a LocalEditor service.
