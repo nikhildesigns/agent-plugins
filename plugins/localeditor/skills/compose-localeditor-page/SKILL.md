@@ -71,12 +71,16 @@ Markdown image reference does not automatically trash an MCP-imported asset.
 
 ## Access and recovery
 
+If tools are missing from the session or helper startup is sandbox-blocked,
+follow [the shared tool recovery guide](../../references/tool-recovery.md) first.
+It covers discovery and approved elevated MCP access, including Codex.
+
 Every call needs an eligible entitlement and the app's Agent Access toggle.
 Discover current scope; parent and child edits require Read & write. Respect
-secret-file, size, symlink, and unavailable cloud-file blocks. If
-`create_embedded_document` or `import_image` is absent, explain that the installed
-LocalEditor app/helper needs a version exposing it; never bypass with shell or
-filesystem writes. These tools create their own `subpages/` or `assets/` folders,
+secret-file, size, symlink, and unavailable cloud-file blocks. If the connected
+helper’s tool list lacks `create_embedded_document` or `import_image` after
+recovery, explain that an app/helper update is required; never bypass with
+shell or filesystem writes. These tools create their own `subpages/` or `assets/` folders,
 not arbitrary folders.
 
 On `revisionMismatch`, reread and reconcile with the existing authorization;

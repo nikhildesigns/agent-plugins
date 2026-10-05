@@ -20,8 +20,8 @@ prefix. Drawing edits the saved `.lcv` JSON through `write_document`.
 - A child Canvas inside a Markdown Page uses `create_embedded_document`;
   use `compose-localeditor-page` for that composition when available.
 
-If a needed tool is absent, explain that the installed LocalEditor app/helper
-needs a version exposing that tool. Do not substitute shell writes or a
+If the connected helper’s tool list lacks a needed tool after recovery, explain
+that the installed LocalEditor app/helper needs a version exposing it. Do not substitute shell writes or a
 Markdown Scratchpad for a requested Canvas.
 
 ## Draw or edit
@@ -46,6 +46,10 @@ local points. Do not silently replace freehand ink with ellipses or a bitmap.
 For ordinary diagrams, choose shapes/text/arrows suitable for the user's goal.
 
 ## Access and recovery
+
+If tools are missing from the session or helper startup is sandbox-blocked,
+follow [the shared tool recovery guide](../../references/tool-recovery.md) first.
+It covers discovery and approved elevated MCP access, including Codex.
 
 Every call requires an eligible entitlement and the app's Agent Access toggle.
 Discover the current approved scope; content writes need Read & write. Respect

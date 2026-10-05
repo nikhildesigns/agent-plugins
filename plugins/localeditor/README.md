@@ -41,8 +41,10 @@ Mixed tasks can use more than one skill.
 
 The new workflows require an app/helper exposing `create_canvas_scratchpad`,
 `create_embedded_document`, and `import_image`. Plugin version 0.2.0 does not
-replace the native helper. If a tool is unavailable, update LocalEditor to a
-release that includes it. Coordinate publishing this plugin version with that
+replace the native helper. If session tools are unavailable, first follow the
+[tool recovery guide](references/tool-recovery.md) for discovery and approved
+elevated access to the bundled MCP helper. Only a missing tool in the connected
+helper’s tool list establishes that an app/helper update is needed. Coordinate publishing this plugin version with that
 app release; a source checkout alone does not update installed clients.
 
 More document examples are on

@@ -59,6 +59,10 @@ created path and `openWarning`; do not recreate the successful file.
 
 ## Access and recovery
 
+If tools are missing from the session or helper startup is sandbox-blocked,
+follow [the shared tool recovery guide](../../references/tool-recovery.md) first.
+It covers discovery and approved elevated MCP access, including Codex.
+
 LocalEditor must be installed in `/Applications`, have an eligible license or
 trial, and have **Settings → Agent Access → Allow MCP access** enabled.
 Full access or Custom Access must grant the relevant Project/Scratchpads scope;
