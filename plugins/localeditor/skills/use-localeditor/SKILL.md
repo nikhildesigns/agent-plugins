@@ -8,6 +8,17 @@ description: Find, read, create, revise, or open ordinary documents in approved 
 Use the LocalEditor MCP tools available in the client; their full names may
 have a client-specific prefix. LocalEditor owns permissions and local files.
 
+## Example workflows
+
+| Use case | Example request | Workflow |
+| --- | --- | --- |
+| Project brief | “Read the approved project notes and draft a feature brief.” | Discover the named Project, read relevant documents, then create the brief in the requested Project folder or a Markdown Scratchpad. |
+| Document review | “Review this spec and update its acceptance criteria.” | Read the spec and its revision, apply the requested changes, preserve unrelated content, and open the saved document for review. |
+| Testing and feedback | “Make a checklist for this change, then read my findings.” | Create one Scratchpad with checkbox checks and nested notes; later read it and summarize the user's marks and comments. |
+
+For a visual exploration or a brief with linked sketches/images, combine this
+skill with the Canvas or composition skill below.
+
 ## Discover and read
 
 - Discover approved Projects with `list_projects`, then use the exact returned

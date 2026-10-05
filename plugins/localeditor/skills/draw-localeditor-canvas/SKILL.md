@@ -1,6 +1,6 @@
 ---
 name: draw-localeditor-canvas
-description: Create or edit a LocalEditor .lcv Canvas in an approved Project or Scratchpad. Use when the user wants shapes, a diagram, text, connected arrows, frames, groups, or Pencil/freehand artwork on a LocalEditor Canvas, or wants to move, resize, organize, or erase its elements. Ordinary Markdown notes and raster image generation are separate workflows.
+description: Create or edit a LocalEditor .lcv Canvas in an approved Project or Scratchpad. Use for wireframes, diagrams, icons, illustration concepts, idea boards, or Pencil/freehand artwork on a LocalEditor Canvas, and for moving, resizing, organizing, or erasing its shapes, text, arrows, frames, groups, and strokes. Ordinary Markdown notes and raster image generation are separate workflows.
 ---
 
 # Draw a LocalEditor Canvas
@@ -8,12 +8,28 @@ description: Create or edit a LocalEditor .lcv Canvas in an approved Project or 
 Use the client's LocalEditor MCP tools, regardless of their client-specific
 prefix. Drawing edits the saved `.lcv` JSON through `write_document`.
 
+## Example workflows
+
+| Use case | Example request | Workflow |
+| --- | --- | --- |
+| Wireframes | “Sketch two dashboard layout ideas in a LocalEditor Canvas.” | Create a Canvas Scratchpad; use frames for screens, rectangles for UI regions, and text for labels. Keep the result a rough layout and revise it from feedback. |
+| Diagrams | “Map the sign-in flow with success and error branches.” | Draw labeled shapes and connected arrows; organize related steps in frames or groups. Read an approved existing spec when the user asks to base the diagram on it. |
+| Icons | “Draw a simple clover icon with Pencil.” | Create sampled `stroke` paths in a Canvas; preserve editable ink and revise the requested details. |
+| Illustration ideas | “Sketch three simple plant illustration concepts.” | Combine Pencil strokes and supported shapes; place each concept in its own frame for comparison. |
+| Idea boards | “Explore three onboarding approaches side by side.” | Arrange short text notes and rough sketches in frames, then update the chosen direction while preserving alternatives. |
+
+Use `create_canvas_scratchpad` for a quick standalone Canvas, or
+`create_embedded_document` with the composition skill for a Canvas inside a
+Markdown Page. Read the Canvas, edit with revision-checked `write_document`,
+and open it for review. These are editable vector sketches; follow the format
+reference for supported elements and styles.
+
 ## Choose the destination
 
 - Discover the named approved Project with `list_projects` and
   `list_project_files`, or find a Canvas with `list_scratchpads`.
 - Create a new Canvas Scratchpad with `create_canvas_scratchpad` (`title`),
-  then use its returned path. This normally opens the empty Canvas.
+  then use its returned path. This normally opens the empty Canvas in compact review; MCP handoffs preserve an existing main window and keep it hidden on cold launch.
 - For a new Canvas file in an existing writable Project folder, use
   `write_document` with `create: true` and the empty document from the format
   reference. Never create a new Scratchpad with `write_document`.

@@ -9,6 +9,19 @@ Use the client's LocalEditor MCP tools, regardless of their client-specific
 prefix. A Page is a Markdown `.md` file; embedded children are ordinary relative
 links with a standard Markdown title marker. Images use ordinary image syntax.
 
+## Example workflows
+
+| Use case | Example request | Workflow |
+| --- | --- | --- |
+| Feature proposal | “Create a proposal with a wireframe Canvas and a detailed notes Page.” | Create the Markdown parent, add child Canvas/Page links with `create_embedded_document`, then populate each child; use the Canvas skill to draw the wireframe. |
+| Reference collection | “Add these local reference images to my design brief.” | Import images from an approved read scope, insert the returned relative image paths with revision-checked writes, and open the brief for review. |
+| System explainer | “Add an architecture diagram and a child Page explaining each component.” | Embed a Canvas for the diagram and a Markdown Page for the explanation; keep the parent's returned links intact. |
+| Linked-document review | “Read this proposal and its linked Pages/Canvases, then summarize the open questions.” | Read the parent, resolve relevant marked links, read each child separately, and name the documents used in the summary. |
+
+Use child Canvases for editable drawings and Markdown image references for
+imported images. A child link does not include its contents in the parent read;
+inspect the relevant children explicitly.
+
 ## Locate the parent
 
 Discover the named approved Project and files with `list_projects` and
