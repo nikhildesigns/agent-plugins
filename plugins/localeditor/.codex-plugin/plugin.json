@@ -1,7 +1,7 @@
 {
   "name": "localeditor",
-  "version": "0.1.1",
-  "description": "Work with approved LocalEditor Projects and Scratchpads through LocalEditor Agent Access.",
+  "version": "0.2.0",
+  "description": "Work with approved LocalEditor documents, Canvases, images, and embedded Pages through Agent Access.",
   "author": {
     "name": "Nikhil Yadav"
   },
@@ -13,8 +13,8 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "LocalEditor",
-    "shortDescription": "Work safely with local Projects and Scratchpads",
-    "longDescription": "Discover, read, create, update, and open documents in LocalEditor Projects and Scratchpads through explicit local Agent Access permissions, revision-checked writes, and secret-file protections.",
+    "shortDescription": "Local documents and Canvases",
+    "longDescription": "Find and revise local documents, draw Canvases, and compose Markdown Pages with images and embedded documents through explicit LocalEditor Agent Access permissions and revision-checked writes.",
     "developerName": "Nikhil Yadav",
     "category": "Productivity",
     "capabilities": ["Interactive"],

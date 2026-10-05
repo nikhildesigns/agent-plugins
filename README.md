@@ -13,7 +13,7 @@ or download application binaries.
 | Plugin | What it does | Required app |
 | --- | --- | --- |
 | `moody` | Search, review, import, organize, and annotate a local visual-inspiration library. | [Moody](https://usemoody.com) |
-| `localeditor` | Read and update approved Projects and Scratchpads with LocalEditor's Agent Access controls. | [LocalEditor](https://localeditor.app) |
+| `localeditor` | Read and revise documents, draw Canvases, and compose Pages with images and embedded documents through LocalEditor Agent Access. | [LocalEditor](https://localeditor.app) |
 
 ## ChatGPT desktop and Codex
 
@@ -65,7 +65,7 @@ plugins/moody/                         Moody plugin package
 plugins/localeditor/                   LocalEditor plugin package
 ```
 
-Each plugin owns its version, client manifests, MCP configuration, skill,
+Each plugin owns its version, client manifests, MCP configuration, skills,
 artwork, requirements, and documentation. No npm package is required because
 the signed helper is part of the installed macOS app.
 
