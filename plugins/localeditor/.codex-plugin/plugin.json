@@ -1,6 +1,6 @@
 {
   "name": "localeditor",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Work with approved LocalEditor documents, Canvases, images, and embedded Pages through Agent Access.",
   "author": {
     "name": "Nikhil Yadav"

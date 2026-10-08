@@ -1,5 +1,10 @@
 # LocalEditor plugin
 
+Version **0.3.0** adds guidance for batched Canvas edits, fixed/adaptive agent
+fields, rendered visual checks, and safe PNG output from the recovery caller.
+The newer Canvas tools require the LocalEditor 0.13.0 helper; older helpers
+remain usable through supported full-document workflows.
+
 This plugin connects local agent clients on macOS to the LocalEditor Agent
 Access MCP helper installed at:
 
@@ -72,6 +77,15 @@ The Codex compatibility manifest points to `./skills/`, while the portable
 package uses the conventional root `skills/` directory. Both discover all
 three workflows from the same files.
 
+To update an existing installation:
+
+```sh
+codex plugin marketplace upgrade nikhildesigns-agent-plugins
+codex plugin add localeditor@nikhildesigns-agent-plugins
+```
+
+Start a fresh chat after updating so it loads the new skills and helper schemas.
+
 ## Claude Code
 
 Add the repository marketplace and install the plugin:
@@ -80,6 +94,15 @@ Add the repository marketplace and install the plugin:
 claude plugin marketplace add nikhildesigns/agent-plugins
 claude plugin install localeditor@nikhildesigns-agent-plugins
 ```
+
+To update an existing installation:
+
+```sh
+claude plugin marketplace update nikhildesigns-agent-plugins
+claude plugin update localeditor@nikhildesigns-agent-plugins
+```
+
+Restart Claude Code after updating.
 
 For local development without installing, run
 `claude --plugin-dir /path/to/agent-plugins/plugins/localeditor`.
