@@ -22,8 +22,9 @@ tools. A missing session tool does not prove that the installed helper is old.
    macOS access. Elevation means running outside that sandbox, not `sudo` or
    root. Respect approval denial; explain it and stop dependent work.
 5. Call only tools authorized by the user's task. Supply tool arguments as a
-   JSON object on stdin; the script prints the actual MCP result and exits
-   unsuccessfully for tool errors. Preserve successful writes across failures.
+   JSON object on stdin; the script preserves MCP text metadata and errors,
+   omits image base64, and exits unsuccessfully for tool errors. Preserve
+   successful writes across failures.
 
 For example, after discovering the schema:
 
@@ -41,7 +42,8 @@ alone is not proof that a document was created or opened.
 The script always invokes
 `/Applications/LocalEditor.app/Contents/Helpers/localeditor-mcp`, performs MCP
 initialization and tool discovery, then sends the requested MCP call. It does
-not read or write documents itself. LocalEditor still enforces entitlement,
+not read or write source documents itself. The optional PNG output below writes
+only the image returned by an authorized MCP call. LocalEditor still enforces entitlement,
 the master toggle, approved scopes, revisions, secret-file protections, and
 cloud/symlink/size guards. A persistent `licenseRequired` or permission error is
 a real block: report it. Do not change configuration, Keychain, environment
@@ -51,3 +53,38 @@ If the connected helper's tool list lacks a needed tool, then explain that an
 app/helper update is required. Plugin updates and app/helper updates are
 separate. Reconnect or restart the client through its supported controls after
 updating; do not claim that a source checkout has updated the installed client.
+
+
+## Inspect a rendered PNG
+
+Prefer native MCP image blocks when the host can display them. Recovery output
+always omits image base64 from printed JSON. To inspect `render_canvas` through
+recovery, save its single PNG to a new, independently authorized absolute path:
+
+```sh
+python3 /absolute/plugin/path/scripts/localeditor_mcp.py call render_canvas --image-output /approved/project/review.png <<'JSON'
+{"path":"/approved/project/Drawing.lcv","expectedRevision":"<saved revision>"}
+JSON
+```
+
+Use an existing project folder authorized for the output; follow the user's
+Scratchpad/temporary-file rules for temporary destinations. MCP read permission
+does not itself grant arbitrary filesystem output permission. The caller never
+creates parent folders or overwrites existing files/symlinks. Choose a fresh
+filename if the destination exists. It saves only after a successful result
+with exactly one `image/png` block, strict base64, at most 8 MiB decoded bytes,
+and a PNG header with dimensions from 1 to 4096. Header validation is a transport
+check; the host's image viewer performs actual image decoding/inspection.
+
+The JSON retains render metadata (saved revision, world bounds, pixel size)
+and adds `imageOutput` with the absolute path, MIME type and byte count. Inspect
+that file with the host's image viewer before claiming visual verification.
+Do not read/reprint its base64. A tool error creates no PNG; preserve the reported
+error rather than substituting direct source-file access. A disk-write failure
+can leave a partial new file: report that path and choose a fresh destination
+for a retry, following the user's cleanup rules.
+
+The existing 16 MiB transport-line limit accommodates the renderer's 8 MiB PNG
+cap (about 10.7 MiB base64) plus its bounded metadata. No larger transport limit
+is needed. The recovery caller identifies as `localeditor-plugin-recovery`, so
+its generic activity badge is expected; do not impersonate Claude, Codex or Cursor.

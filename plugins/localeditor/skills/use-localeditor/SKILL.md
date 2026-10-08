@@ -7,6 +7,8 @@ description: Find, read, create, revise, or open ordinary documents in approved 
 
 Use the LocalEditor MCP tools available in the client; their full names may
 have a client-specific prefix. LocalEditor owns permissions and local files.
+Read the shared [activity, navigation and review guidance](../../references/document-workflows.md)
+for editing leases, WikiLinks, focus-preserving handoffs and helper/plugin updates.
 
 ## Example workflows
 
@@ -39,15 +41,19 @@ skill with the Canvas or composition skill below.
 - Create an ordinary supported Project text file with `write_document` using
   `create: true` only when its parent directory already exists in a writable
   Project. Never create a new Scratchpad using `write_document`.
-- For an existing document, `read_document` first, then `write_document` with
+- For existing-target edits, begin activity before preparation, then
+  read with `read_document`, then use `write_document` with
   its absolute `path`, complete `content`, and `expectedRevision`. Preserve
   frontmatter, unrelated content, and the user's notes and check marks.
 - On `revisionMismatch`, reread and reconcile the requested edit with the
   intervening changes. Retry under the existing authorization; ask only when
   reconciliation changes the intended result or creates a conflict.
 
-For Canvas drawing, use `draw-localeditor-canvas` when available. For image
-imports or child Pages/Canvases in Markdown, use `compose-localeditor-page`.
+Renew activity every 60 seconds while preparing and finish on success/failure.
+A new Scratchpad returns its path before you can begin a lease to populate it.
+
+For Canvas drawing, use `draw-localeditor-canvas` when available; it prefers
+batches. For image imports or child Pages/Canvases in Markdown, use `compose-localeditor-page`.
 
 ## Scratchpad handoffs and feedback
 
@@ -62,9 +68,10 @@ Preserve the user's marks and notes when updating the document.
 
 ## Open for review
 
-Use `open_in_localeditor` with an existing absolute path when the user asks to
-see a document or review is useful. It can hand off a file outside an approved
-content scope without authorizing reads or writes there. A new Scratchpad
+Finish activity before review. Use `open_in_localeditor` with an existing absolute
+path and `activate:true` for an explicit show request. Routine completion may
+omit activation, preserving an exact already-open target’s tab/window/focus.
+It can hand off a file outside an approved content scope without authorizing reads or writes there. A new Scratchpad
 normally opens automatically. If its result has `opened: false`, report the
 created path and `openWarning`; do not recreate the successful file.
 

@@ -6,7 +6,9 @@ description: Create or edit a LocalEditor .lcv Canvas in an approved Project or 
 # Draw a LocalEditor Canvas
 
 Use the client's LocalEditor MCP tools, regardless of their client-specific
-prefix. Drawing edits the saved `.lcv` JSON through `write_document`.
+prefix. Prefer incremental drawing with `apply_canvas_batch`; use revision-checked
+`write_document` only for the full-document fallback. Read the shared
+[activity, navigation and review guidance](../../references/document-workflows.md).
 
 ## Example workflows
 
@@ -20,8 +22,8 @@ prefix. Drawing edits the saved `.lcv` JSON through `write_document`.
 
 Use `create_canvas_scratchpad` for a quick standalone Canvas, or
 `create_embedded_document` with the composition skill for a Canvas inside a
-Markdown Page. Read the Canvas, edit with revision-checked `write_document`,
-and open it for review. These are editable vector sketches; follow the format
+Markdown Page. Inspect bounded Canvas data, save coherent batches, render useful
+saved stages for visual inspection, and hand off for review. These are editable vector sketches; follow the format
 reference for supported elements and styles.
 
 ## Choose the destination
@@ -40,26 +42,39 @@ If the connected helper’s tool list lacks a needed tool after recovery, explai
 that the installed LocalEditor app/helper needs a version exposing it. Do not substitute shell writes or a
 Markdown Scratchpad for a requested Canvas.
 
-## Draw or edit
+## Draw or edit — batching preferred
 
-Read [references/canvas-format.md](references/canvas-format.md) before writing
-Canvas JSON. It covers every supported element type and editing operation.
+Read [references/canvas-format.md](references/canvas-format.md) for element
+geometry and [references/canvas-mcp-workflow.md](references/canvas-mcp-workflow.md)
+for the drawing loop, fixed/adaptive agent fields, limits/retries and when to use
+`render_canvas` for visual inspection.
 
-1. Call `read_document` for an existing or newly created Canvas. Retain its
-   revision and parse its JSON without discarding unrelated fields.
-2. Apply the requested drawing or edit. Use stable unique IDs, finite
-   coordinates, valid bindings and membership, and preserve existing elements,
-   assets, layers, and metadata outside the requested change.
-3. Call `write_document` with the full JSON and `expectedRevision` from that
-   read. On a revision conflict, reread and merge; ask only if the intervening
-   edit conflicts with the requested result.
-4. Open the Canvas with `open_in_localeditor` for requested review. Report the
-   saved path and what changed. An open result is not proof that the visual
-   result is correct; obtain the user's visual feedback when needed.
+1. Begin activity as soon as the existing approved Canvas path is known, before
+   preparing drawing data or a generator. Prefer a declared fixed workspace for
+   a planned drawing; explicitly choose adaptive only for exploratory growth.
+2. Use `get_canvas_summary` for the revision and `read_canvas_elements` for the
+   needed pages/IDs. Preserve unrelated data and use stable unique element IDs.
+3. Prefer coherent `apply_canvas_batch` calls with the latest `expectedRevision`
+   and your `leaseId`. Save an early meaningful structure, then related details;
+   avoid one call per shape. Use returned revisions for subsequent batches.
+4. Renew every 60 seconds while preparing. Keep field mode stable across save
+   speeds; correct bounds with renewal, or finish/begin to change modes.
+5. Use `render_canvas` after meaningful saved stages and for final visual
+   inspection; use a crop for local problems. Inspect actual pixels before
+   claiming the drawing was visually checked. It does not test live app overlays.
+6. Finish activity on success/failure. Follow shared review guidance: explicit
+   show uses `activate:true`; ordinary completion preserves an already-open target.
 
-For a Pencil request such as a clover icon, use `stroke` elements with sampled
-local points. Do not silently replace freehand ink with ellipses or a bitmap.
-For ordinary diagrams, choose shapes/text/arrows suitable for the user's goal.
+If bounded/batch tools are absent after discovery/recovery, use `read_document`
+and revision-checked `write_document` with the complete preserved JSON. Do not
+send newer arguments to an older schema. On a stale revision or lost response,
+reread/reconcile saved data before retrying; never blindly replay a batch.
+
+For Pencil, use `stroke` elements with sampled local points; do not replace
+requested freehand ink with ellipses or a bitmap. For diagrams, use suitable
+shapes/text/arrows. Preserve assets, layers and metadata outside the requested
+change. If a successful Canvas cannot open or render, retain it and report the
+remaining review limitation rather than recreating or replacing it.
 
 ## Access and recovery
 

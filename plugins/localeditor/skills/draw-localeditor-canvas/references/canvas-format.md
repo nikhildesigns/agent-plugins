@@ -2,6 +2,9 @@
 
 Use this reference when creating or editing `.lcv` content. The available MCP
 tool schema and the installed app remain the authority if versions differ.
+Prefer batches as described in [canvas-mcp-workflow.md](canvas-mcp-workflow.md),
+including fixed/adaptive fields and saved PNG inspection. This file describes
+saved drawing geometry; activity overlays never become Canvas elements.
 
 ## Document
 

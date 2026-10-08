@@ -1,6 +1,6 @@
 ---
 name: compose-localeditor-page
-description: Compose a LocalEditor Markdown Page or Scratchpad with imported local images and embedded child Pages or Canvases, or inspect the contents of those children. Use for LocalEditor code-context hubs, component references, linked flow documentation, image insertion, child Pages/Canvases, or reading embedded documents. Plain document edits and drawing the Canvas itself have separate skills.
+description: Compose a LocalEditor Markdown Page or Scratchpad with imported local or public remote images and embedded child Pages or Canvases, or inspect the contents of those children. Use for LocalEditor code-context hubs, component references, linked flow documentation, image insertion, child Pages/Canvases, or reading embedded documents. Plain document edits and drawing the Canvas itself have separate skills.
 ---
 
 # Compose a LocalEditor Page
@@ -8,6 +8,8 @@ description: Compose a LocalEditor Markdown Page or Scratchpad with imported loc
 Use the client's LocalEditor MCP tools, regardless of their client-specific
 prefix. A Page is a Markdown `.md` file; embedded children are ordinary relative
 links with a standard Markdown title marker. Images use ordinary image syntax.
+Read the shared [activity, navigation and review guidance](../../references/document-workflows.md)
+for leases, WikiLinks, completion handoffs and app/plugin capability differences.
 
 ## Example workflows
 
@@ -44,7 +46,9 @@ update the relevant children while preserving unrelated notes and parent links.
 
 Discover the named approved Project and files with `list_projects` and
 `list_project_files`, or use `list_scratchpads`. Follow pagination and resolve
-ambiguous names before writing. Read the Markdown parent with `read_document`.
+ambiguous names before writing. For editing, begin activity on the known existing
+parent before preparing changes, then read it with `read_document`. Read-only
+review needs no write-intent lease. Renew every 60 seconds and finish on success/failure.
 For a new Markdown Scratchpad, use `create_scratchpad` and its returned path;
 for a Project file, use `write_document` with `create: true` in an existing
 writable folder.
@@ -57,10 +61,14 @@ writable folder.
 3. The tool creates the child and appends its link to the parent. Use the
    returned `path` and `link`; do not append a duplicate link or guess the
    filename. The result's `parentRevision` describes the changed parent.
-4. Read the child, then populate it with revision-checked `write_document`.
-   For Canvas drawing, use `draw-localeditor-canvas` when available.
+4. Begin child activity as soon as its returned path is known, before preparing
+   its content. Read/populate child Pages with revision-checked `write_document`.
+   For Canvas drawing, use `draw-localeditor-canvas` when available: prefer
+   bounded reads and batches, declare the field, and inspect saved PNG stages.
 5. Reread the parent before later edits, preserving the inserted link and any
-   intervening user changes. Open the parent or child for requested review.
+   intervening user changes. Finish parent/child activity when each is done.
+   Explicit show requests use `activate:true`; routine completion preserves an
+   exact already-open target under the shared handoff guidance.
 
 Children live in a shared `subpages/` folder. Creating a child of an existing
 child reuses that folder, so a link may be a sibling filename. Treat the tool's
@@ -87,18 +95,34 @@ not claim access merely because the parent contains a link.
 1. Identify an existing local source image in an approved read scope and an
    existing Markdown destination in a Read & write scope. A path supplied by
    the user alone does not grant MCP access to another folder.
-2. Call `import_image` with `documentPath` and `sourcePath`. The helper copies
-   or reuses the image in `assets/` and returns `markdownPath`.
+2. Begin destination activity before preparation, then call `import_image` with
+   `documentPath` and `sourcePath`. The helper copies or reuses the image in `assets/` and returns `markdownPath`.
 3. Reread the destination, then insert `![descriptive alt text](markdownPath)`
    using the returned path verbatim and `write_document` with the latest
    `expectedRevision`. Preserve frontmatter and unrelated Markdown.
-4. Report the saved document and image. If the document write fails after the
-   import, retain the successful asset, reconcile the document, and retry the
+4. If the document write fails after the import, retain the successful asset, reconcile the document, and retry the
    authorized insertion; do not repeatedly import or claim the image is linked.
+   Finish activity on success/failure and report the saved document and image.
 
 Imports accept local images up to 20 MB. The helper does not return image pixels
 through `read_document`, which reads supported text documents. Removing a
 Markdown image reference does not automatically trash an MCP-imported asset.
+
+## Download and insert a remote image
+
+For an explicitly requested public HTTPS image or public X post photos, use
+`import_image_url` with `documentPath` and `sourceUrl` when exposed by the helper.
+Begin destination activity before preparing the insertion. The tool downloads
+into the same local `assets/` workflow and returns an array of imported images.
+Reread the Markdown destination, insert each returned `markdownPath` using
+standard image syntax, and save with its latest `expectedRevision`. Do not use
+the original remote URL when local assets were requested. Importing alone does
+not insert anything; preserve successful imports if a later document write fails.
+
+Respect the 20 MB image limit, URL validation and writable destination boundary.
+If the connected helper lacks URL import, explain the capability requirement;
+do not silently substitute a remote embed or bypass scope with shell downloads.
+Finish activity on success/failure and follow shared review guidance.
 
 ## Access and recovery
 
