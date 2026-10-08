@@ -32,20 +32,31 @@ Agent Access. LocalEditor remains the authority for every permission check.
 | --- | --- | --- |
 | `use-localeditor` | Find, read, revise, or open documents; exchange Markdown Scratchpad checklists and notes. | “Read the design brief in my LocalEditor Project.” |
 | `draw-localeditor-canvas` | Create/edit `.lcv` Canvases with shapes, text, arrows, frames, groups, layers, and Pencil strokes. | “Draw a simple clover with Pencil on a LocalEditor Canvas Scratchpad.” |
-| `compose-localeditor-page` | Import an image, create a child Page/Canvas, or read embedded documents. | “Add this local image and a child Canvas to my LocalEditor note.” |
+| `compose-localeditor-page` | Import an image, create a child Page/Canvas, or read embedded documents. | “Add these reference images and a child Canvas to my LocalEditor note.” |
 
 Both clients can select the same skills from these requests. Claude Code also
 exposes explicit names such as `/localeditor:draw-localeditor-canvas`; Codex
 exposes the installed skills for explicit invocation through its skill picker.
 Mixed tasks can use more than one skill.
 
-The new workflows require an app/helper exposing `create_canvas_scratchpad`,
-`create_embedded_document`, and `import_image`. Plugin version 0.2.0 does not
-replace the native helper. If session tools are unavailable, first follow the
-[tool recovery guide](references/tool-recovery.md) for discovery and approved
-elevated access to the bundled MCP helper. Only a missing tool in the connected
-helper’s tool list establishes that an app/helper update is needed. Coordinate publishing this plugin version with that
-app release; a source checkout alone does not update installed clients.
+For Canvas work, prefer summary + bounded reads + coherent revision-checked
+batches. Declare a fixed planned agent field by default; explicitly choose
+adaptive growth at activity begin when needed. Inspect meaningful saved stages
+with `render_canvas` before claiming visual quality. The
+[Canvas workflow](skills/draw-localeditor-canvas/references/canvas-mcp-workflow.md)
+covers batching, field semantics, visual checks and older-helper fallbacks.
+Shared [document guidance](references/document-workflows.md) covers activity
+renewal, WikiLinks and completion handoffs; composition also supports explicit
+public HTTPS/X-photo import when `import_image_url` is exposed.
+
+Discover actual helper schemas before using newer tools. These skills do not
+replace the native helper; keep supported full-document workflows usable when
+batching/rendering is absent. If session tools are unavailable, first follow the
+[tool recovery guide](references/tool-recovery.md), including approved elevated
+access and optional safe PNG output. A missing tool in the connected helper's
+list establishes a capability gap. The helper version does not identify the
+installed plugin version. Coordinate publication with matching app/helper
+availability; source edits alone do not update installed clients.
 
 More document examples are on
 [localeditor.app/agents](https://localeditor.app/agents.html).

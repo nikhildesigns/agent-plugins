@@ -1,4 +1,5 @@
 """Protocol checks for recovery transport; never launches the app or real helper."""
+import base64
 import contextlib
 import importlib.util
 import io
@@ -7,7 +8,7 @@ from pathlib import Path
 import subprocess
 import sys
 import unittest
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 sys.dont_write_bytecode = True
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "localeditor_mcp.py"
@@ -112,6 +113,125 @@ class RecoveryTests(unittest.TestCase):
         self.assertEqual(status, 1)
         self.assertEqual(output, "")
         self.assertIn("closed its output", errors)
+
+
+PNG = base64.b64decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aG1sAAAAASUVORK5CYII=")
+
+
+class ImageOutputTests(unittest.TestCase):
+    def result(self, data=None):
+        return {"content": [
+            {"type": "text", "text": '{"revision":"saved","width":1,"height":1}'},
+            {"type": "image", "mimeType": "image/png", "data": data or base64.b64encode(PNG).decode()},
+        ]}
+
+    def invoke(self, result, output_path="/approved/review.png", open_error=None):
+        session = MagicMock()
+        session.discover.return_value = {"tools": [{"name": "render_canvas"}]}
+        session.request.return_value = result
+        output, errors = io.StringIO(), io.StringIO()
+        options = ["--image-output", output_path] if output_path is not None else []
+        file = MagicMock()
+        file.__enter__.return_value = file
+        with patch.object(mcp, "McpSession", return_value=session), patch.object(
+            sys, "argv", [str(SCRIPT), "call", "render_canvas", *options]
+        ), patch.object(sys, "stdin", io.StringIO('{"path":"/approved/Canvas.lcv"}')), patch.object(
+            mcp.Path, "is_file", return_value=True
+        ), patch.object(mcp.Path, "is_dir", return_value=True), patch.object(
+            mcp.Path, "open", return_value=file, side_effect=open_error
+        ) as opened, contextlib.redirect_stdout(output), contextlib.redirect_stderr(errors):
+            status = mcp.main()
+        session.close.assert_called_once()
+        return status, output.getvalue(), errors.getvalue(), opened, file
+
+    def test_saves_exact_png_and_preserves_revision_without_base64(self):
+        result = self.result()
+        status, output, errors, opened, file = self.invoke(result)
+        self.assertEqual((status, errors), (0, ""))
+        opened.assert_called_once_with("xb")
+        file.write.assert_called_once_with(PNG)
+        data = json.loads(output)
+        self.assertEqual(data["content"][0], result["content"][0])
+        self.assertEqual(data["imageOutput"], {"path": "/approved/review.png", "mimeType": "image/png", "bytes": len(PNG)})
+        self.assertNotIn(result["content"][1]["data"], output)
+        self.assertEqual(result["content"][1]["type"], "image")
+
+    def test_default_omits_image_without_writing(self):
+        result = self.result()
+        status, output, _, opened, _ = self.invoke(result, output_path=None)
+        self.assertEqual(status, 0)
+        opened.assert_not_called()
+        self.assertNotIn(result["content"][1]["data"], output)
+        self.assertIn("--image-output", output)
+        self.assertNotIn("imageOutput", json.loads(output))
+
+    def test_existing_file_or_symlink_is_never_overwritten(self):
+        status, output, errors, opened, file = self.invoke(self.result(), open_error=FileExistsError("exists"))
+        self.assertEqual((status, output), (1, ""))
+        opened.assert_called_once_with("xb")
+        file.write.assert_not_called()
+        self.assertIn("exists", errors)
+
+    def test_tool_error_preserves_diagnostics_and_never_creates_file(self):
+        result = self.result()
+        result["isError"] = True
+        result["content"][0]["text"] = "scopeDenied"
+        status, output, _, opened, _ = self.invoke(result)
+        self.assertEqual(status, 1)
+        opened.assert_not_called()
+        self.assertTrue(json.loads(output)["isError"])
+        self.assertIn("scopeDenied", output)
+        self.assertNotIn(result["content"][1]["data"], output)
+
+    def test_missing_multiple_wrong_type_or_invalid_image_never_creates_file(self):
+        missing = {"content": [{"type": "text", "text": "metadata"}]}
+        multiple = self.result()
+        multiple["content"].append(multiple["content"][1])
+        wrong_type = self.result()
+        wrong_type["content"][1]["mimeType"] = "image/jpeg"
+        oversized_dimensions = bytearray(PNG)
+        oversized_dimensions[16:20] = (4097).to_bytes(4, "big")
+        for result in [missing, multiple, wrong_type, self.result("not base64!"),
+                       self.result(base64.b64encode(b"not png").decode()),
+                       self.result(base64.b64encode(oversized_dimensions).decode())]:
+            with self.subTest(result=result):
+                status, output, errors, opened, _ = self.invoke(result)
+                self.assertEqual((status, output), (1, ""))
+                self.assertTrue(errors)
+                opened.assert_not_called()
+
+    def test_oversized_png_is_rejected_before_file_creation(self):
+        with patch.object(mcp, "MAX_IMAGE_BYTES", len(PNG) - 1):
+            status, output, errors, opened, _ = self.invoke(self.result())
+        self.assertEqual((status, output), (1, ""))
+        self.assertIn("limit", errors)
+        opened.assert_not_called()
+
+    def test_output_requires_absolute_png_path_and_existing_parent(self):
+        for value in ["relative.png", "/approved/image.jpeg"]:
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                mcp.image_destination(value)
+        with patch.object(mcp.Path, "is_dir", return_value=False), self.assertRaises(ValueError):
+            mcp.image_destination("/missing/review.png")
+
+    def test_malformed_content_is_rejected_without_writing(self):
+        for result in [[], {"content": None}, {"content": ["bad block"]}]:
+            with self.subTest(result=result):
+                status, output, errors, opened, _ = self.invoke(result)
+                self.assertEqual((status, output), (1, ""))
+                self.assertIn("malformed", errors)
+                opened.assert_not_called()
+
+    def test_disk_failure_reports_output_path_and_no_success(self):
+        with patch.object(mcp.Path, "open") as opened:
+            opened.return_value.__enter__.return_value.write.side_effect = OSError("disk full")
+            with self.assertRaisesRegex(OSError, "/approved/review.png"):
+                mcp.printable_result(self.result(), Path("/approved/review.png"))
+
+    def test_image_option_is_rejected_for_discovery(self):
+        with patch.object(sys, "argv", [str(SCRIPT), "discover", "--image-output", "/approved/review.png"]), contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as stopped:
+            mcp.main()
+        self.assertEqual(stopped.exception.code, 2)
 
 
 if __name__ == "__main__":
