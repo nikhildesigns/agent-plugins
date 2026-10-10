@@ -55,6 +55,23 @@ Standalone text supports `fontSize`, `textWrap`, `textAutoSize`, and
 existing text behavior unless the requested edit changes it. Positive font
 sizes and nonnegative minimum heights are required.
 
+Prefer a shape's native `text` for its single attached label (a button, simple
+control, diagram node or placeholder); a separate Text overlay/group is unnecessary.
+Fitted labels (`labelAutoFit` omitted/true) wrap and shrink within the bounds;
+`fontSize` is the maximum, not a guaranteed rendered size. Frame `text` is its
+outside title. Use separate Text for headings, captions and independently laid-out
+multi-part content. Preserve existing layouts unless restructuring is requested.
+
+For a helper advertising the existing label fields, a button can be one element:
+
+```json
+{"id":"add-book","type":"rectangle","x":100,"y":100,"width":148,"height":48,"text":"+ Add book"}
+```
+
+Native `text` labels do not depend on newer theme/style tools. Discover support,
+omit unsupported optional `labelAutoFit`/font/alignment controls, and retain
+separate Text if the older helper lacks shape labels. Do not invent a new label field.
+
 ## Pencil geometry
 
 Stroke points are in Canvas units relative to the element's `x/y`; moving ink

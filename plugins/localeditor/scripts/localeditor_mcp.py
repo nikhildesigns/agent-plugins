@@ -80,7 +80,7 @@ class McpSession:
     def discover(self):
         info = self.request("initialize", {
             "protocolVersion": "2024-11-05", "capabilities": {},
-            "clientInfo": {"name": "localeditor-plugin-recovery", "version": "0.4.0"},
+            "clientInfo": {"name": "localeditor-plugin-recovery", "version": "0.4.1"},
         })
         self.send({"jsonrpc": "2.0", "method": "notifications/initialized"})
         tools = []

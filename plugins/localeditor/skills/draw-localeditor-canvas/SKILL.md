@@ -14,8 +14,8 @@ prefix. Prefer incremental drawing with `apply_canvas_batch`; use revision-check
 
 | Use case | Example request | Workflow |
 | --- | --- | --- |
-| Wireframes | “Sketch two dashboard layout ideas in a LocalEditor Canvas.” | Use frames for screens, rectangles for UI regions, and readable text. Default to monochrome ink/gray and adaptive neutral fills or no fill; check both themes when supported. |
-| Diagrams | “Map the sign-in flow with success and error branches.” | Draw labeled shapes and connected arrows; organize related steps in frames or groups. Read an approved existing spec when the user asks to base the diagram on it. |
+| Wireframes | “Sketch two dashboard layout ideas in a LocalEditor Canvas.” | Use frames for screens, rectangles for UI regions, native shape text for simple control/placeholder labels, and separate Text for independent content. Default to monochrome ink/gray and adaptive neutral fills or no fill; check both themes when supported. |
+| Diagrams | “Map the sign-in flow with success and error branches.” | Put node labels in each shape’s native `text` field and draw connected arrows; organize related steps in frames or groups. Read an approved existing spec when the user asks to base the diagram on it. |
 | Icons | “Draw a simple clover icon with Pencil.” | Create sampled `stroke` paths in a Canvas; preserve editable ink and revise the requested details. |
 | Illustration ideas | “Sketch three simple plant illustration concepts.” | Combine Pencil strokes and supported shapes; place each concept in its own frame for comparison. |
 | Idea boards | “Explore three onboarding approaches side by side.” | Arrange short text notes and rough sketches in frames, then update the chosen direction while preserving alternatives. |
@@ -89,6 +89,26 @@ requested freehand ink with ellipses or a bitmap. For diagrams, use suitable
 shapes/text/arrows. Preserve assets, layers and metadata outside the requested
 change. If a successful Canvas cannot open or render, retain it and report the
 remaining review limitation rather than recreating or replacing it.
+
+## Prefer native shape labels
+
+For a single label belonging to a rectangle, ellipse or diamond, put it in
+that shape's `text` field. Prefer this for buttons, simple input/filter controls,
+diagram nodes and labeled placeholders. Do not add a separate Text overlay or
+create a group solely to attach one label. Frame `text` remains its title.
+
+Fitted labels wrap and shrink inside the shape: `labelAutoFit` defaults to
+true and `fontSize` sets the maximum size. Use supported `textAlign` and
+`fontFamily` only when needed. Keep separate Text for headings, captions,
+multi-part cards, mixed text styles and content needing its own position/size.
+Do not collapse a card's title, metadata and body into one shape label.
+Preserve existing composition and text elements unless restructuring is requested.
+
+Use the connected helper's advertised fields, not its version number. Native
+shape `text` does not require the newer theme/style tools. Omit optional fitting,
+font or alignment fields an older helper does not expose; keep separate Text
+when it lacks native shape-label support. Do not invent a `label` field/tool or
+inject unsupported fields through full-document writes.
 
 ## Access and recovery
 

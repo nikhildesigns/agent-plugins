@@ -1,8 +1,10 @@
 # LocalEditor plugin
 
-Version **0.4.0** adds theme-aware monochrome wireframes, Canvas styling and
-rotation guidance, Pencil fill/smoothing, and coherent Page/document saves.
-New features require a supporting native helper; older workflows remain usable.
+Version **0.4.1** prefers native shape labels for simple Canvas controls,
+diagram nodes and placeholders, while keeping independent content as Text.
+Theme-aware monochrome wireframes, Canvas styling/rotation, Pencil fill/smoothing
+and coherent Page/document saves remain supported when the native helper exposes
+them. Older helpers remain usable through discovered capabilities.
 
 This plugin lets an external agent read and edit your local documents, draw
 editable Canvas wireframes and diagrams, and compose Markdown Pages with images
@@ -100,7 +102,8 @@ codex plugin marketplace upgrade nikhildesigns-agent-plugins
 codex plugin add localeditor@nikhildesigns-agent-plugins
 ```
 
-Start a fresh chat after updating so it loads the new skills and helper schemas.
+Reload through the client’s supported controls, or start a fresh chat, to load
+the updated skills and rediscover helper schemas.
 
 ## Claude Code
 
