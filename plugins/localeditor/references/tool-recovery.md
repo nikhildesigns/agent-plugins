@@ -88,3 +88,15 @@ The existing 16 MiB transport-line limit accommodates the renderer's 8 MiB PNG
 cap (about 10.7 MiB base64) plus its bounded metadata. No larger transport limit
 is needed. The recovery caller identifies as `localeditor-plugin-recovery`, so
 its generic activity badge is expected; do not impersonate Claude, Codex or Cursor.
+
+## Newer Canvas features
+
+Discovery also establishes whether `get_canvas_appearance` and the render
+`theme` parameter are available. Do not infer them from a helper version number.
+When supported, include `"theme":"light"` or `"theme":"dark"` in the render
+JSON above and use a fresh output filename for each image. The caller passes
+these arguments unchanged and retains theme/background metadata. When absent,
+omit the argument and report the unavailable theme check. Follow the shared
+[update guidance](document-workflows.md#update-while-keeping-older-helpers-usable)
+to update the app and plugin separately, reconnect and rediscover; keep working
+older document/drawing tools usable.

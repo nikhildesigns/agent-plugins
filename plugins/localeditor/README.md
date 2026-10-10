@@ -1,9 +1,18 @@
 # LocalEditor plugin
 
-Version **0.3.0** adds guidance for batched Canvas edits, fixed/adaptive agent
-fields, rendered visual checks, and safe PNG output from the recovery caller.
-The newer Canvas tools require the LocalEditor 0.13.0 helper; older helpers
-remain usable through supported full-document workflows.
+Version **0.4.0** adds theme-aware monochrome wireframes, Canvas styling and
+rotation guidance, Pencil fill/smoothing, and coherent Page/document saves.
+New features require a supporting native helper; older workflows remain usable.
+
+This plugin lets an external agent read and edit your local documents, draw
+editable Canvas wireframes and diagrams, and compose Markdown Pages with images
+and linked subpages in approved LocalEditor Projects and Scratchpads.
+
+The workflows cover coherent saves, Canvas styling/rotation, monochrome
+wireframes, Pencil fill/smoothing, current/light/dark saved rendering and
+fixed/adaptive activity fields when the connected helper supports them. Older
+helpers remain usable through supported document and full-Canvas workflows.
+Discover capabilities rather than inferring them from a version number.
 
 This plugin connects local agent clients on macOS to the LocalEditor Agent
 Access MCP helper installed at:
@@ -36,7 +45,7 @@ Agent Access. LocalEditor remains the authority for every permission check.
 | Skill | When to use it | Example |
 | --- | --- | --- |
 | `use-localeditor` | Find, read, revise, or open documents; exchange Markdown Scratchpad checklists and notes. | “Read the design brief in my LocalEditor Project.” |
-| `draw-localeditor-canvas` | Create/edit `.lcv` Canvases with shapes, text, arrows, frames, groups, layers, and Pencil strokes. | “Draw a simple clover with Pencil on a LocalEditor Canvas Scratchpad.” |
+| `draw-localeditor-canvas` | Create/edit/style/rotate `.lcv` Canvases with shapes, text, arrows, frames, groups and Pencil strokes when supported. | “Draw a simple clover with Pencil on a LocalEditor Canvas Scratchpad.” |
 | `compose-localeditor-page` | Import an image, create a child Page/Canvas, or read embedded documents. | “Add these reference images and a child Canvas to my LocalEditor note.” |
 
 Both clients can select the same skills from these requests. Claude Code also
@@ -51,7 +60,10 @@ with `render_canvas` before claiming visual quality. The
 [Canvas workflow](skills/draw-localeditor-canvas/references/canvas-mcp-workflow.md)
 covers batching, field semantics, visual checks and older-helper fallbacks.
 Shared [document guidance](references/document-workflows.md) covers activity
-renewal, WikiLinks and completion handoffs; composition also supports explicit
+renewal, coherent saves, WikiLinks, completion handoffs and upgrading while
+keeping older helpers usable. Read current appearance before drawing and use
+monochrome wireframes by default; inspect both themes when supported.
+Composition also supports explicit
 public HTTPS/X-photo import when `import_image_url` is exposed.
 
 Discover actual helper schemas before using newer tools. These skills do not
@@ -61,7 +73,11 @@ batching/rendering is absent. If session tools are unavailable, first follow the
 access and optional safe PNG output. A missing tool in the connected helper's
 list establishes a capability gap. The helper version does not identify the
 installed plugin version. Coordinate publication with matching app/helper
-availability; source edits alone do not update installed clients.
+availability; source edits alone do not update installed clients. For missing
+capabilities, update LocalEditor through its sidebar update control or the
+[official download](https://localeditor.app), update the plugin separately using
+the client instructions below, then reconnect/start a fresh chat and rediscover.
+Do not promise that an unpublished feature is available in the latest release.
 
 More document examples are on
 [localeditor.app/agents](https://localeditor.app/agents.html).

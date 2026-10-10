@@ -44,7 +44,9 @@ skill with the Canvas or composition skill below.
 - For existing-target edits, begin activity before preparation, then
   read with `read_document`, then use `write_document` with
   its absolute `path`, complete `content`, and `expectedRevision`. Preserve
-  frontmatter, unrelated content, and the user's notes and check marks.
+  frontmatter, unrelated content, and the user's notes and check marks. Combine
+  related changes into one revision-checked write; avoid a separate save for
+  each paragraph or checklist item.
 - On `revisionMismatch`, reread and reconcile the requested edit with the
   intervening changes. Retry under the existing authorization; ask only when
   reconciliation changes the intended result or creates a conflict.
@@ -80,6 +82,9 @@ created path and `openWarning`; do not recreate the successful file.
 If tools are missing from the session or helper startup is sandbox-blocked,
 follow [the shared tool recovery guide](../../references/tool-recovery.md) first.
 It covers discovery and approved elevated MCP access, including Codex.
+If an older helper lacks a requested capability, follow the shared app/plugin
+update guidance and continue the document operations it supports. Do not infer
+feature support from a version number or send unsupported arguments.
 
 LocalEditor must be installed in `/Applications`, have an eligible license or
 trial, and have **Settings → Agent Access → Allow MCP access** enabled.

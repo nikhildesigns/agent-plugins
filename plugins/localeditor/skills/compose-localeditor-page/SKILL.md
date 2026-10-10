@@ -65,7 +65,11 @@ writable folder.
    its content. Read/populate child Pages with revision-checked `write_document`.
    For Canvas drawing, use `draw-localeditor-canvas` when available: prefer
    bounded reads and batches, declare the field, and inspect saved PNG stages.
-5. Reread the parent before later edits, preserving the inserted link and any
+5. For several children, pass the returned `parentRevision` to the next create
+   call. Each create saves the parent once; make your own parent text changes
+   in one write before or after child creation, rather than interleaving saves.
+   If an older result lacks `parentRevision`, reread before the next create.
+   Reread the parent before later text edits, preserving the inserted link and any
    intervening user changes. Finish parent/child activity when each is done.
    Explicit show requests use `activate:true`; routine completion preserves an
    exact already-open target under the shared handoff guidance.
@@ -86,7 +90,9 @@ Read the parent first. Find marked links such as:
 Resolve the relative, percent-encoded target against the parent's folder and
 call `read_document` on the resulting absolute path in the approved scope.
 The parent's content does not recursively contain its child bytes. A Canvas
-read returns JSON, not a screenshot. Inspect relevant children only and name
+read returns JSON, not a screenshot. For a visual question about a child
+Canvas, use saved `render_canvas` pixels and the Canvas skill; check both themes
+when supported. Inspect relevant children only and name
 which documents informed the answer. Report missing or blocked targets; do
 not claim access merely because the parent contains a link.
 
@@ -97,9 +103,10 @@ not claim access merely because the parent contains a link.
    the user alone does not grant MCP access to another folder.
 2. Begin destination activity before preparation, then call `import_image` with
    `documentPath` and `sourcePath`. The helper copies or reuses the image in `assets/` and returns `markdownPath`.
-3. Reread the destination, then insert `![descriptive alt text](markdownPath)`
-   using the returned path verbatim and `write_document` with the latest
-   `expectedRevision`. Preserve frontmatter and unrelated Markdown.
+3. For several images, finish all imports first. Reread the destination, then
+   insert all `![descriptive alt text](markdownPath)` references in one
+   `write_document` with the latest `expectedRevision`. Use returned paths
+   verbatim and preserve frontmatter and unrelated Markdown.
 4. If the document write fails after the import, retain the successful asset, reconcile the document, and retry the
    authorized insertion; do not repeatedly import or claim the image is linked.
    Finish activity on success/failure and report the saved document and image.
@@ -114,8 +121,9 @@ For an explicitly requested public HTTPS image or public X post photos, use
 `import_image_url` with `documentPath` and `sourceUrl` when exposed by the helper.
 Begin destination activity before preparing the insertion. The tool downloads
 into the same local `assets/` workflow and returns an array of imported images.
-Reread the Markdown destination, insert each returned `markdownPath` using
-standard image syntax, and save with its latest `expectedRevision`. Do not use
+Complete all requested imports first, then reread the Markdown destination.
+Insert every returned `markdownPath` using standard image syntax in one
+revision-checked write; do not save once per image. Do not use
 the original remote URL when local assets were requested. Importing alone does
 not insert anything; preserve successful imports if a later document write fails.
 
@@ -129,6 +137,9 @@ Finish activity on success/failure and follow shared review guidance.
 If tools are missing from the session or helper startup is sandbox-blocked,
 follow [the shared tool recovery guide](../../references/tool-recovery.md) first.
 It covers discovery and approved elevated MCP access, including Codex.
+For missing capabilities, follow shared guidance to update the app and plugin
+to their latest published versions, then reconnect and rediscover. Keep plain
+document edits and supported imports/child operations usable in older helpers.
 
 Every call needs an eligible entitlement and the app's Agent Access toggle.
 Discover current scope; parent and child edits require Read & write. Respect

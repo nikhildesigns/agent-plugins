@@ -1,7 +1,7 @@
 {
   "name": "localeditor",
-  "version": "0.3.0",
-  "description": "Work with approved LocalEditor documents, Canvases, images, and embedded Pages through Agent Access.",
+  "version": "0.4.0",
+  "description": "Read and edit local documents, draw editable Canvases, and compose Markdown Pages with images and subpages in approved LocalEditor Projects and Scratchpads.",
   "author": {
     "name": "Nikhil Yadav"
   },
@@ -13,8 +13,8 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "LocalEditor",
-    "shortDescription": "Local documents and Canvases",
-    "longDescription": "Find and revise local documents, draw Canvases, and compose Markdown Pages with images and embedded documents through explicit LocalEditor Agent Access permissions and revision-checked writes.",
+    "shortDescription": "Read, write and draw locally",
+    "longDescription": "Read and edit local documents, create editable Canvas wireframes and diagrams, and compose Markdown Pages with images and linked subpages in LocalEditor on macOS. Work in Projects and Scratchpads you approve through Agent Access. LocalEditor stores your files locally and enforces read/write permissions.",
     "developerName": "Nikhil Yadav",
     "category": "Productivity",
     "capabilities": ["Interactive"],

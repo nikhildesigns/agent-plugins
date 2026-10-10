@@ -10,9 +10,13 @@ workflow the helper supports; updating the plugin alone does not add tools.
 1. Create or discover the approved Canvas. Begin activity immediately when its
    existing path is known, before preparing drawing data or a script. Declare
    a planned region if known; see the field choices below.
-2. `get_canvas_summary({path})` supplies the saved revision, counts and stored
-   geometry bounds without all drawing bytes. For an edit, inspect only the
-   necessary pages or exact IDs with `read_canvas_elements`.
+2. Read current appearance via `get_canvas_appearance` when exposed, or the
+   `appearance` in a Canvas summary/full read. It reports saved preference,
+   resolved theme, background/text and named stroke/fill palette colors. Store
+   names, not copied hex values. `get_canvas_summary({path})` supplies the saved
+   revision, counts and stored geometry bounds without all drawing bytes.
+   For an edit, inspect only necessary pages or exact IDs with
+   `read_canvas_elements`.
 3. Submit coherent `apply_canvas_batch` operations using `path`, the latest
    `expectedRevision` and your `leaseId`. Start with meaningful structure (a
    screen frame or central motif), then related sections/rings/details. Do not
@@ -44,8 +48,9 @@ For an existing pair of inspected labels, one coherent batch can update both:
 
 Batches support `add`, `update` (`id`, `set`, `unset`), `remove`, `setBindings`,
 `removeBindings` and optional `order`. Preserve unknown fields and stable IDs.
-Moving/resizing a container does not implicitly transform children or Pencil
-points: submit the intended descendant changes. Removing a container cascades
+Container moves/resizes/rotations require explicit descendant geometry changes
+in the batch. Pencil resizes also scale local points; Pencil rotation keeps
+those points unchanged and sets the angle. Removing a container cascades
 through descendants. Removing a target detaches surviving arrow endpoints at
 their saved positions; explicitly remove the connector if it should disappear.
 Use current tool schemas for fields, binding targets and ordering anchors.
@@ -121,9 +126,14 @@ allowed 64–4096; a small crop is not guaranteed to fill that size (upscaling i
 capped). Stale `expectedRevision` fails rather than inspecting another version.
 
 Rendering is read-only and headless: it does not open/switch the app or include
-selection, activity fields, cursors or unsaved GUI edits. It uses a white
-background and the bundled Canvas font; it does not verify live progress,
-theme, viewport, gestures or Finder packaging. Those remain separate user checks.
+selection, activity fields, cursors or unsaved GUI edits. With theme support,
+it defaults to the current app preference (resolving System now). Explicit
+`theme:"light"` or `theme:"dark"` previews do not change preferences or document
+bytes. Inspect both for readable text, neutral fills and visible outlines;
+custom hex stays exact. Metadata reports resolved `theme` and `background`;
+`appearance` describes the current app context even for an overridden render.
+This checks saved theme rendering, not live progress, viewport, gestures or
+Finder packaging. Those remain separate user checks.
 Nonempty assets/layers and excessive complexity are rejected. Preserve user
 data; do not strip unsupported content merely to force a successful render.
 
@@ -134,3 +144,24 @@ the host's image viewer. Do not print base64 into model context. If image
 inspection or `render_canvas` is unavailable, report visual verification as
 pending and request user review; keep supported drawing tools usable. A rendered
 PNG never replaces the requested editable `.lcv` file.
+
+## Theme checks and older-helper fallback
+
+When the discovered render schema includes `theme`, use the same saved revision:
+
+```json
+{"path":"/approved/Canvas.lcv","expectedRevision":"<saved revision>","theme":"light"}
+{"path":"/approved/Canvas.lcv","expectedRevision":"<saved revision>","theme":"dark"}
+```
+
+Omitted theme or `"current"` follows the app. Read fresh appearance again before
+a later composition; do not assume a remembered theme is still current.
+
+If appearance is absent, report that current theme context is unavailable.
+If render `theme` is absent, omit it and do not claim a both-theme check; older
+renderers use a white background and their supported fonts. Continue supported
+basic outlines/text and revision-safe edits, preserve optional fields already
+present, and follow shared guidance to update to the latest published app and
+plugin. Missing batches use the full-document fallback; unsupported style or
+rotation must not be introduced through that fallback. No renderer means
+visual review remains pending rather than preventing supported drawing saves.

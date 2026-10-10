@@ -15,7 +15,7 @@
     {
       "name": "localeditor",
       "source": "./plugins/localeditor",
-      "description": "Work with approved LocalEditor documents, Canvases, images, and embedded Pages through Agent Access."
+      "description": "Read and edit local documents, draw editable Canvases, and compose Markdown Pages with images and subpages in approved LocalEditor Projects and Scratchpads."
     }
   ]
 }
