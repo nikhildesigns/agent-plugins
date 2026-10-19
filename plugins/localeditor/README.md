@@ -1,12 +1,12 @@
 # LocalEditor plugin
 
-Unreleased routing update: structured diagrams default to Mermaid Markdown;
+Version **0.5.0** routes structured diagrams to Mermaid Markdown;
 Canvas is for spatial drawing or explicit Canvas requests. The new
 `create-localeditor-diagram` skill shares this routing with the other workflows.
 Mermaid preview needs an app/helper that advertises support; source edits do not
 update installed clients or establish that a compatible release is published.
 
-Version **0.4.1** prefers native shape labels for simple Canvas controls,
+Canvas workflows continue to prefer native shape labels for simple controls,
 diagram nodes and placeholders, while keeping independent content as Text.
 Theme-aware monochrome wireframes, Canvas styling/rotation, Pencil fill/smoothing
 and coherent Page/document saves remain supported when the native helper exposes
