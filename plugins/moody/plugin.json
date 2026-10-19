@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "moody",
-  "version": "0.1.0",
-  "description": "Search, review, import, organize, and annotate a local Moody visual inspiration library through Moody Agent Access.",
+  "version": "0.2.0",
+  "description": "Search, import, organize, annotate and comment on local Moody media, saved posts and page previews through Agent Access.",
   "author": {
     "name": "Nikhil Yadav"
   },
@@ -10,11 +10,13 @@
     "com.openai": {
       "interface": {
         "displayName": "Moody",
-        "shortDescription": "Work with your local visual inspiration library",
-        "longDescription": "Search and visually review your local Moody library, import explicit media and public links, save items to Collections, and add approved captions or tags through Moody's local Agent Access MCP server.",
+        "shortDescription": "Local media, posts and links",
+        "longDescription": "Search and review your local Moody references, import public links and media, organize posts or individual attachments, and write approved captions, tags or personal comments through local Agent Access.",
         "developerName": "Nikhil Yadav",
         "category": "Productivity",
-        "capabilities": ["Interactive"],
+        "capabilities": [
+          "Interactive"
+        ],
         "composerIcon": "./assets/logo.png",
         "logo": "./assets/logo.png",
         "defaultPrompt": [

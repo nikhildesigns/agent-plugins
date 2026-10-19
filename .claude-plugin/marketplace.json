@@ -10,7 +10,7 @@
     {
       "name": "moody",
       "source": "./plugins/moody",
-      "description": "Search, review, import, organize, and annotate a local Moody visual inspiration library through Moody Agent Access."
+      "description": "Search, import, organize, annotate and comment on local Moody media, saved posts and page previews through Agent Access."
     },
     {
       "name": "localeditor",

@@ -19,7 +19,7 @@ Before using it:
 
 1. Open Moody.
 2. In **Settings → Agent Access**, enable **Allow agent access**.
-3. Enable the separate Import, Organize, or Annotate items permissions only
+3. Enable the separate Import, Organize, Annotate items, or Edit personal comments permissions only
    when those capabilities are needed.
 
 ## Claude Code
@@ -49,6 +49,22 @@ The plugin registers the helper as its own MCP server, so its tools appear as
 
 The skill is available as `/moody:use-moody` and also loads automatically for
 Moody requests.
+
+## Reference workflows (plugin 0.2.0)
+
+The skill covers saved social posts, text-only references, general-page previews
+and independent media. Post and attachment IDs have separate comments, tags and
+Collections. Captions target media Items; original text stays intact.
+
+With a helper exposing `set_inspiration_comment`, **Edit personal comments** in
+Moody Settings allows approved setting, replacement and clearing of the one
+comment on a chosen Item. This permission is off by default and independent of
+caption editing. Link refresh and layout editing are not MCP operations.
+
+The plugin does not update the app/helper. Discover the installed helper's
+schemas; older releases may lack these reference fields and comment writing.
+Keep their supported workflows usable. Updating this source does not update
+an installed plugin or release a new Moody app.
 
 ## Library ownership
 
