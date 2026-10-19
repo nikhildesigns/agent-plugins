@@ -1,6 +1,6 @@
 ---
 name: compose-localeditor-page
-description: Compose a LocalEditor Markdown Page or Scratchpad with imported local or public remote images and embedded child Pages or Canvases, or inspect the contents of those children. Use for LocalEditor code-context hubs, component references, linked flow documentation, image insertion, child Pages/Canvases, or reading embedded documents. Plain document edits and drawing the Canvas itself have separate skills.
+description: Compose a LocalEditor Markdown Page or Scratchpad with imported local or public remote images and embedded child Pages or Canvases, or inspect the contents of those children. Use for LocalEditor code-context hubs, component references, linked flow documentation, image insertion, child Pages/Canvases, or reading embedded documents. Inline structured diagrams use Mermaid; plain document edits and Canvas drawing have separate skills.
 ---
 
 # Compose a LocalEditor Page
@@ -17,14 +17,17 @@ for leases, WikiLinks, completion handoffs and app/plugin capability differences
 | --- | --- | --- |
 | Feature proposal | “Create a proposal with a wireframe Canvas and a detailed notes Page.” | Create the Markdown parent, add child Canvas/Page links with `create_embedded_document`, then populate each child; use the Canvas skill to draw the wireframe. |
 | Reference collection | “Add these local reference images to my design brief.” | Import images from an approved read scope, insert the returned relative image paths with revision-checked writes, and open the brief for review. |
-| System explainer | “Add an architecture diagram and a child Page explaining each component.” | Embed a Canvas for the diagram and a Markdown Page for the explanation; keep the parent's returned links intact. |
+| System explainer | “Add an architecture diagram and a child Page explaining each component.” | Put a Mermaid diagram inline in the Markdown parent, then create explanatory child Pages; choose a Canvas only for explicit Canvas or spatial-layout needs. |
 | Component references | “Create a LocalEditor reference Page for the Button component, with subpages for props, variants, and accessibility.” | Inspect the relevant source, create the parent reference Page, and add child Pages with source-backed details and code-file links. |
 | Flow documentation | “Document sign-in, recovery, and sign-out with an index and a subpage for each flow.” | Read the implementation, create the flow index, then populate each child Page with entry points, steps, states, and edge cases; link related flows. |
 | Code-context hub | “Create a context Page for this feature linking its components, flows, and implementation notes.” | Build a concise parent overview and linked detail Pages so users and agents can read the overview first and open only the relevant details. |
 | Linked-document review | “Read this proposal and its linked Pages/Canvases, then summarize the open questions.” | Read the parent, resolve relevant marked links, read each child separately, and name the documents used in the summary. |
 
-Use child Canvases for editable drawings and Markdown image references for
-imported images. A child link does not include its contents in the parent read;
+Read [format routing](../../references/diagram-routing.md) when diagrams are
+involved. Use inline Mermaid for structured diagrams; a diagram does not
+automatically need an embedded Canvas. Honor explicit choices and existing
+formats. Use child Canvases for spatial drawings/wireframes and Markdown image
+references for imported images. A child link does not include its contents in the parent read;
 inspect the relevant children explicitly.
 
 ## Context around code

@@ -3,6 +3,10 @@
 Use the connected helper's discovered schemas and initialize instructions. The
 plugin supplies workflows; LocalEditor.app supplies capabilities and permissions.
 
+For diagram creation or composition, use the shared [format routing](diagram-routing.md).
+Mermaid is Markdown source; Canvas is spatial artwork. Preserve explicit choices
+and existing formats.
+
 ## Declare work before preparing it
 
 For creation/editing, call `begin_document_activity` as soon as the approved

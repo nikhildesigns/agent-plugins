@@ -13,7 +13,7 @@ or download application binaries.
 | Plugin | What it does | Required app |
 | --- | --- | --- |
 | `moody` | Search, review, import, organize, and annotate a local visual-inspiration library. | [Moody](https://usemoody.com) |
-| `localeditor` | Read and revise documents, draw Canvases, and compose Pages with images and embedded documents through LocalEditor Agent Access. | [LocalEditor](https://localeditor.app) |
+| `localeditor` | Read and revise documents, create Mermaid diagrams, draw spatial Canvases, and compose Pages through LocalEditor Agent Access. | [LocalEditor](https://localeditor.app) |
 
 ## ChatGPT desktop and Codex
 

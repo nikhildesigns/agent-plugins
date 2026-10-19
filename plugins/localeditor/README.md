@@ -1,5 +1,11 @@
 # LocalEditor plugin
 
+Unreleased routing update: structured diagrams default to Mermaid Markdown;
+Canvas is for spatial drawing or explicit Canvas requests. The new
+`create-localeditor-diagram` skill shares this routing with the other workflows.
+Mermaid preview needs an app/helper that advertises support; source edits do not
+update installed clients or establish that a compatible release is published.
+
 Version **0.4.1** prefers native shape labels for simple Canvas controls,
 diagram nodes and placeholders, while keeping independent content as Text.
 Theme-aware monochrome wireframes, Canvas styling/rotation, Pencil fill/smoothing
@@ -7,7 +13,7 @@ and coherent Page/document saves remain supported when the native helper exposes
 them. Older helpers remain usable through discovered capabilities.
 
 This plugin lets an external agent read and edit your local documents, draw
-editable Canvas wireframes and diagrams, and compose Markdown Pages with images
+structured Mermaid diagrams and editable Canvas wireframes/spatial artwork, and compose Markdown Pages with images
 and linked subpages in approved LocalEditor Projects and Scratchpads.
 
 The workflows cover coherent saves, Canvas styling/rotation, monochrome
@@ -21,7 +27,7 @@ Access MCP helper installed at:
 
 `/Applications/LocalEditor.app/Contents/Helpers/localeditor-mcp`
 
-One package serves Claude Code and Codex with the same three skills in
+One package serves Claude Code and Codex with the same four skills in
 `skills/`:
 
 | Client | Manifest | MCP config |
@@ -47,6 +53,7 @@ Agent Access. LocalEditor remains the authority for every permission check.
 | Skill | When to use it | Example |
 | --- | --- | --- |
 | `use-localeditor` | Find, read, revise, or open documents; exchange Markdown Scratchpad checklists and notes. | “Read the design brief in my LocalEditor Project.” |
+| `create-localeditor-diagram` | Structured Mermaid diagrams in `.md` Pages or Scratchpads. | “Map sign-in success and error branches in this LocalEditor Page.” |
 | `draw-localeditor-canvas` | Create/edit/style/rotate `.lcv` Canvases with shapes, text, arrows, frames, groups and Pencil strokes when supported. | “Draw a simple clover with Pencil on a LocalEditor Canvas Scratchpad.” |
 | `compose-localeditor-page` | Import an image, create a child Page/Canvas, or read embedded documents. | “Add these reference images and a child Canvas to my LocalEditor note.” |
 
@@ -54,6 +61,11 @@ Both clients can select the same skills from these requests. Claude Code also
 exposes explicit names such as `/localeditor:draw-localeditor-canvas`; Codex
 exposes the installed skills for explicit invocation through its skill picker.
 Mixed tasks can use more than one skill.
+
+Read [format routing](references/diagram-routing.md) for Mermaid versus Canvas.
+Honor explicit choices and existing formats. Mermaid uses ordinary document
+tools; `render_canvas` is Canvas-only and cannot verify a Mermaid preview.
+Mixed specifications can use inline Mermaid plus embedded Canvas wireframes.
 
 For Canvas work, prefer summary + bounded reads + coherent revision-checked
 batches. Declare a fixed planned agent field by default; explicitly choose
@@ -93,7 +105,7 @@ codex plugin add localeditor@nikhildesigns-agent-plugins
 
 The Codex compatibility manifest points to `./skills/`, while the portable
 package uses the conventional root `skills/` directory. Both discover all
-three workflows from the same files.
+four workflows from the same files.
 
 To update an existing installation:
 
