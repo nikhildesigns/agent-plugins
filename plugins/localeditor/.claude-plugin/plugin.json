@@ -1,7 +1,7 @@
 {
   "name": "localeditor",
-  "version": "0.4.1",
-  "description": "Read and edit local documents, draw editable Canvases, and compose Markdown Pages with images and subpages in approved LocalEditor Projects and Scratchpads.",
+  "version": "0.5.0",
+  "description": "Read and edit local documents, create Mermaid diagrams, draw editable Canvas wireframes and sketches, and compose Pages in approved LocalEditor Projects and Scratchpads.",
   "author": {
     "name": "Nikhil Yadav"
   },

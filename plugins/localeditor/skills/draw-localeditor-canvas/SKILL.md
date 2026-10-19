@@ -1,6 +1,6 @@
 ---
 name: draw-localeditor-canvas
-description: Create or edit a LocalEditor .lcv Canvas in an approved Project or Scratchpad. Use for wireframes, diagrams, icons, illustration concepts, idea boards, or Pencil/freehand artwork on a LocalEditor Canvas, and for styling, rotating, moving, resizing, organizing, or erasing its shapes, text, arrows, frames, groups, and strokes, including theme-aware colors, curved connectors, Pencil fill and smoothing when supported. Ordinary Markdown notes and raster image generation are separate workflows.
+description: Create or edit LocalEditor .lcv Canvases for explicit Canvas requests, wireframes, sketches, spatial idea boards, custom compositions, manually positioned diagrams and visual shape editing. Supports shapes, text, arrows, frames, groups and Pencil with advertised styles. Unspecified structured relationship diagrams use Mermaid Markdown instead.
 ---
 
 # Draw a LocalEditor Canvas
@@ -10,12 +10,17 @@ prefix. Prefer incremental drawing with `apply_canvas_batch`; use revision-check
 `write_document` only for the full-document fallback. Read the shared
 [activity, navigation and review guidance](../../references/document-workflows.md).
 
+For diagram requests, first read [format routing](../../references/diagram-routing.md).
+Honor explicit Canvas choices and keep existing Canvases in their current format.
+Use Mermaid for an unspecified structured flow or relationship diagram; use this
+workflow when spatial drawing or direct shape editing is intended.
+
 ## Example workflows
 
 | Use case | Example request | Workflow |
 | --- | --- | --- |
 | Wireframes | “Sketch two dashboard layout ideas in a LocalEditor Canvas.” | Use frames for screens, rectangles for UI regions, native shape text for simple control/placeholder labels, and separate Text for independent content. Default to monochrome ink/gray and adaptive neutral fills or no fill; check both themes when supported. |
-| Diagrams | “Map the sign-in flow with success and error branches.” | Put node labels in each shape’s native `text` field and draw connected arrows; organize related steps in frames or groups. Read an approved existing spec when the user asks to base the diagram on it. |
+| Canvas diagrams | “Draw an editable Canvas sign-in flow with success and error branches.” | Put node labels in each shape’s native `text` field and draw connected arrows; organize related steps in frames or groups. Read an approved existing spec when the user asks to base the diagram on it. |
 | Icons | “Draw a simple clover icon with Pencil.” | Create sampled `stroke` paths in a Canvas; preserve editable ink and revise the requested details. |
 | Illustration ideas | “Sketch three simple plant illustration concepts.” | Combine Pencil strokes and supported shapes; place each concept in its own frame for comparison. |
 | Idea boards | “Explore three onboarding approaches side by side.” | Arrange short text notes and rough sketches in frames, then update the chosen direction while preserving alternatives. |

@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "localeditor",
-  "version": "0.4.1",
-  "description": "Read and edit local documents, draw editable Canvases, and compose Markdown Pages with images and subpages in approved LocalEditor Projects and Scratchpads.",
+  "version": "0.5.0",
+  "description": "Read and edit local documents, create Mermaid diagrams, draw editable Canvas wireframes and sketches, and compose Pages in approved LocalEditor Projects and Scratchpads.",
   "author": {
     "name": "Nikhil Yadav"
   },
@@ -11,7 +11,7 @@
       "interface": {
         "displayName": "LocalEditor",
         "shortDescription": "Read, write and draw locally",
-        "longDescription": "Read and edit local documents, create editable Canvas wireframes and diagrams, and compose Markdown Pages with images and linked subpages in LocalEditor on macOS. Work in Projects and Scratchpads you approve through Agent Access. LocalEditor stores your files locally and enforces read/write permissions.",
+        "longDescription": "Create structured Mermaid diagrams in Markdown, draw editable Canvas wireframes and spatial artwork, and compose Pages with images and linked subpages in LocalEditor on macOS. Explicit format choices and existing files are preserved. Work in Projects and Scratchpads approved through Agent Access; files stay local.",
         "developerName": "Nikhil Yadav",
         "category": "Productivity",
         "capabilities": ["Interactive"],

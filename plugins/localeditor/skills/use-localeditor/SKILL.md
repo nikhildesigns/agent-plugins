@@ -1,6 +1,6 @@
 ---
 name: use-localeditor
-description: Find, read, create, revise, or open ordinary documents in approved LocalEditor Projects and Markdown Scratchpads. Use for LocalEditor project briefs, specs, notes, document review, or Scratchpad checklists and user feedback. Canvas drawing and Markdown composition with images or embedded Pages/Canvases have separate skills; a generic mention of a project alone does not call for LocalEditor.
+description: Find, read, create, revise, or open ordinary documents in approved LocalEditor Projects and Markdown Scratchpads. Use for LocalEditor project briefs, specs, notes, document review, or Scratchpad checklists and user feedback. Mermaid diagram creation, Canvas drawing and Markdown composition with images or embedded Pages/Canvases have separate skills; a generic mention of a project alone does not call for LocalEditor.
 ---
 
 # Use LocalEditor
@@ -18,8 +18,11 @@ for editing leases, WikiLinks, focus-preserving handoffs and helper/plugin updat
 | Document review | “Review this spec and update its acceptance criteria.” | Read the spec and its revision, apply the requested changes, preserve unrelated content, and open the saved document for review. |
 | Testing and feedback | “Make a checklist for this change, then read my findings.” | Create one Scratchpad with checkbox checks and nested notes; later read it and summarize the user's marks and comments. |
 
-For a visual exploration or a brief with linked sketches/images, combine this
-skill with the Canvas or composition skill below.
+For diagram work, read [format routing](../../references/diagram-routing.md):
+structured diagrams default to Mermaid through `create-localeditor-diagram`
+when available; spatial drawing and explicit Canvas requests use the Canvas
+workflow. Keep existing file formats. A mixed brief can use inline Mermaid plus
+child Canvas wireframes through the composition workflow.
 
 ## Discover and read
 
