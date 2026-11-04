@@ -41,6 +41,7 @@ Every element has `id`, `type`, `x`, `y`, `width`, and `height`.
 | Frame | `type: "frame"`; children refer to it with `parentId` |
 | Group | `type: "group"`; member elements refer to it with `parentId` |
 | Pencil | `type: "stroke"`, with nonempty `points: [{"x": 0, "y": 0}, ...]` |
+| Image, when advertised | `type: "image"`, `assetId`, positive bounds and optional normalized source `crop`; the asset stores the local relative path |
 | Eraser/delete | Remove requested elements and bindings that reference them |
 | Move/resize/rotate | Change element geometry and all intended descendants; rotation is absolute clockwise degrees |
 | Duplicate | Copy elements with new IDs, translating geometry and remapping copied membership/bindings |
@@ -123,10 +124,27 @@ Layers have `id`, `name`, and optional `visible`/`locked`. Membership uses
 and avoid editing locked content unless the user requests it. Element array
 order also affects drawing order within a layer.
 
-There is no supported `image` element. Preserve existing asset records, but do
-not invent rendering support by adding one. Importing an image into a Markdown
-Page is handled by
-`compose-localeditor-page`.
+## Image resources in supporting helpers
+
+Discover image-element and `addAssets` support before adding image content.
+Assets are document-level records: `{id, type:"image", path}` with optional
+intrinsic `width`, `height` and `mimeType`. Their path is relative to the Canvas;
+use the image import result's `markdownPath` verbatim, including `../` or encoding.
+Image elements refer to a registered asset by `assetId`; element width/height
+are the placed size, distinct from optional intrinsic asset dimensions.
+
+Optional `crop` is `{x,y,width,height}` in normalized source coordinates:
+x/y are nonnegative, width/height positive, and x+width/y+height cannot exceed 1.
+Omitting it uses the whole image. Cropping is nondestructive; `cornerRadius`,
+`rotation` and `opacity` affect placement/rendering without rewriting the source.
+Keep existing assets and unknown metadata. Removing an image element retains
+asset entries/files for shared references and Undo; never delete them as cleanup.
+
+Follow [canvas-images.md](canvas-images.md) for scoped imports and a coherent
+asset/element batch. Markdown image syntax belongs in a Page through
+`compose-localeditor-page`, not in Canvas JSON. If image support is absent,
+preserve existing resources and explain the capability gap; never invent support
+through a full-document write.
 
 To revert your own saved edit, reread the latest document and apply the inverse
 change with its current revision, preserving intervening user edits. Do not
@@ -147,7 +165,7 @@ defaults throughout an existing document.
 | `strokeStyle` | `solid` (default), `dashed`, or `none` to remove the outline of a fillable shape/stroke. Keep the Frame border. |
 | `strokeWidth` | `thin`, `regular` (default), `thick`. |
 | `opacity` | `0.1–1`; default `1`. Keep wireframe text at full opacity. |
-| `cornerRadius` | Canvas units, `0–10000`, clamped to the shape; rectangles, Frames and diamonds. Legacy rounded rectangles use radius 12 until edited. |
+| `cornerRadius` | Canvas units, `0–10000`, clamped to the shape; rectangles, Frames, diamonds and images when supported. Legacy rounded rectangles use radius 12 until edited. |
 | `smoothing` | Pencil only, `0–1`; zero restores the original polyline. |
 | `arrowShape` | `straight` (absent default) or `curved`; new GUI arrows are curved, so set it explicitly for a curved MCP connector. |
 | `fontFamily` | Text/shape labels: `freehand` (default), `sans`, `serif`, `mono`. Frame titles retain their fixed presentation. |

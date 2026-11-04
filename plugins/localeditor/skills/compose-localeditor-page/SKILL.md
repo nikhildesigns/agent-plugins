@@ -26,8 +26,11 @@ for leases, WikiLinks, completion handoffs and app/plugin capability differences
 Read [format routing](../../references/diagram-routing.md) when diagrams are
 involved. Use inline Mermaid for structured diagrams; a diagram does not
 automatically need an embedded Canvas. Honor explicit choices and existing
-formats. Use child Canvases for spatial drawings/wireframes and Markdown image
-references for imported images. A child link does not include its contents in the parent read;
+formats. Use child Canvases for spatial drawings/wireframes, image reference boards and
+screenshot feedback; use Markdown image references for images within the Page.
+For images placed inside a Canvas, follow `draw-localeditor-canvas` and its
+Canvas image workflow: import into that child Canvas, register image assets and
+place image elements through its advertised batch schema. A child link does not include its contents in the parent read;
 inspect the relevant children explicitly.
 
 ## Context around code
@@ -98,6 +101,15 @@ Canvas, use saved `render_canvas` pixels and the Canvas skill; check both themes
 when supported. Inspect relevant children only and name
 which documents informed the answer. Report missing or blocked targets; do
 not claim access merely because the parent contains a link.
+
+## Choose the image destination
+
+Use this skill's import steps below for images in Markdown. If the user wants
+an image on a Canvas or a board of screenshots, use `draw-localeditor-canvas`.
+For a board embedded in this Page, create the child Canvas first, then use that
+child's returned path as the import destination. Importing into the Markdown
+parent does not place an image inside its child Canvas. Honor existing formats
+and retain the parent/child links and unrelated content.
 
 ## Import and insert a local image
 
