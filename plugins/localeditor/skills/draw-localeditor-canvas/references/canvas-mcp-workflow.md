@@ -47,7 +47,10 @@ For an existing pair of inspected labels, one coherent batch can update both:
 ```
 
 Batches support `add`, `update` (`id`, `set`, `unset`), `remove`, `setBindings`,
-`removeBindings` and optional `order`. Preserve unknown fields and stable IDs.
+`removeBindings` and optional `order`; image-capable helpers also expose
+`addAssets` for local image resources. Import bytes before registering assets
+and adding their image elements in one batch; see [canvas-images.md](canvas-images.md).
+Preserve unknown fields and stable IDs.
 Container moves/resizes/rotations require explicit descendant geometry changes
 in the batch. Pencil resizes also scale local points; Pencil rotation keeps
 those points unchanged and sets the angle. Removing a container cascades
@@ -134,8 +137,12 @@ custom hex stays exact. Metadata reports resolved `theme` and `background`;
 `appearance` describes the current app context even for an overridden render.
 This checks saved theme rendering, not live progress, viewport, gestures or
 Finder packaging. Those remain separate user checks.
-Nonempty assets/layers and excessive complexity are rejected. Preserve user
-data; do not strip unsupported content merely to force a successful render.
+Image-capable helpers render supported local image assets after approved read
+scope, secret, cloud and byte-limit checks; unknown assets, nonempty layers and
+excessive complexity can be rejected. Older renderers may reject image assets.
+Preserve user data; do not strip unsupported content to force a successful render.
+Saved MCP rendering does not establish Finder image previews/thumbnails; those
+are a separate known limitation of the 0.17.0 candidate.
 
 Inspect the native image block with the host's image capability. For recovery,
 use the caller's PNG-output option and an independently authorized destination

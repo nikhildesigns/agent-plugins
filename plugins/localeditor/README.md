@@ -1,6 +1,11 @@
 # LocalEditor plugin
 
-Version **0.5.0** routes structured diagrams to Mermaid Markdown;
+Version **0.5.1** adds capability-aware guidance for Canvas image composition:
+reference boards, wireframes with real images, before/after reviews and screenshot
+feedback. Import requested images, register local assets and place/crop them in
+coherent revision-checked batches when the helper advertises support.
+
+The plugin routes structured diagrams to Mermaid Markdown;
 Canvas is for spatial drawing or explicit Canvas requests. The new
 `create-localeditor-diagram` skill shares this routing with the other workflows.
 Mermaid preview needs an app/helper that advertises support; source edits do not
@@ -54,7 +59,7 @@ Agent Access. LocalEditor remains the authority for every permission check.
 | --- | --- | --- |
 | `use-localeditor` | Find, read, revise, or open documents; exchange Markdown Scratchpad checklists and notes. | “Read the design brief in my LocalEditor Project.” |
 | `create-localeditor-diagram` | Structured Mermaid diagrams in `.md` Pages or Scratchpads. | “Map sign-in success and error branches in this LocalEditor Page.” |
-| `draw-localeditor-canvas` | Create/edit/style/rotate `.lcv` Canvases with shapes, text, arrows, frames, groups and Pencil strokes when supported. | “Draw a simple clover with Pencil on a LocalEditor Canvas Scratchpad.” |
+| `draw-localeditor-canvas` | Compose `.lcv` Canvases with editable shapes, Pencil and imported images when supported. | “Arrange these UI screenshots on a Canvas and annotate the proposed changes.” |
 | `compose-localeditor-page` | Import an image, create a child Page/Canvas, or read embedded documents. | “Add these reference images and a child Canvas to my LocalEditor note.” |
 
 Both clients can select the same skills from these requests. Claude Code also
@@ -77,8 +82,15 @@ Shared [document guidance](references/document-workflows.md) covers activity
 renewal, coherent saves, WikiLinks, completion handoffs and upgrading while
 keeping older helpers usable. Read current appearance before drawing and use
 monochrome wireframes by default; inspect both themes when supported.
-Composition also supports explicit
-public HTTPS/X-photo import when `import_image_url` is exposed.
+Composition supports explicit public HTTPS/X-photo import when `import_image_url`
+is exposed. Images inside a Canvas use the
+[Canvas image workflow](skills/draw-localeditor-canvas/references/canvas-images.md);
+images inside Markdown use the Page skill. Canvas boards fit visual planning and
+review: collect requested references, compose, then use the board to guide
+implementation or compare results. Importing into a Markdown parent does not
+insert an image into its child Canvas. Canvas image composition requires matching
+helper schemas; Finder image previews/thumbnails remain a separate known
+limitation of the 0.17.0 candidate.
 
 Discover actual helper schemas before using newer tools. These skills do not
 replace the native helper; keep supported full-document workflows usable when

@@ -1,6 +1,6 @@
 ---
 name: draw-localeditor-canvas
-description: Create or edit LocalEditor .lcv Canvases for explicit Canvas requests, wireframes, sketches, spatial idea boards, custom compositions, manually positioned diagrams and visual shape editing. Supports shapes, text, arrows, frames, groups and Pencil with advertised styles. Unspecified structured relationship diagrams use Mermaid Markdown instead.
+description: Create or edit LocalEditor .lcv Canvases for explicit Canvas requests, wireframes, sketches, spatial idea boards, custom compositions, manually positioned diagrams and visual shape editing. Supports shapes, text, arrows, frames, groups, Pencil and imported images with advertised capabilities. Use for screenshot/reference boards, wireframes with real content and visual feedback comparisons. Unspecified structured relationship diagrams use Mermaid Markdown instead.
 ---
 
 # Draw a LocalEditor Canvas
@@ -24,12 +24,23 @@ workflow when spatial drawing or direct shape editing is intended.
 | Icons | “Draw a simple clover icon with Pencil.” | Create sampled `stroke` paths in a Canvas; preserve editable ink and revise the requested details. |
 | Illustration ideas | “Sketch three simple plant illustration concepts.” | Combine Pencil strokes and supported shapes; place each concept in its own frame for comparison. |
 | Idea boards | “Explore three onboarding approaches side by side.” | Arrange short text notes and rough sketches in frames, then update the chosen direction while preserving alternatives. |
+| Reference boards | “Arrange these UI screenshots as references for our next feature.” | Import requested local images or public links into the Canvas assets, then place and label them in Frames with editable notes about useful patterns. |
+| Wireframes with real content | “Use this product photo and logo in two layout concepts.” | Combine imported images with editable shapes/text; crop and round placements without changing the originals. |
+| Before/after reviews | “Compare the current checkout with this proposed design.” | Put the supplied screenshots side by side in labeled Frames and add editable callouts; distinguish proposed changes from observed implementation. |
+| Feedback boards | “Annotate these screenshots with my review notes.” | Import the screenshots, then add grouped labels, arrows and notes while preserving the source images and unrelated artwork. |
 
 Use `create_canvas_scratchpad` for a quick standalone Canvas, or
 `create_embedded_document` with the composition skill for a Canvas inside a
 Markdown Page. Inspect bounded Canvas data, save coherent batches, render useful
-saved stages for visual inspection, and hand off for review. These are editable vector sketches; follow the format
-reference for supported elements and styles.
+saved stages for visual inspection, and hand off for review. Canvases combine
+editable vector elements with local image resources; follow the format reference
+for supported elements and styles.
+
+Image boards fit visual planning and review: collect requested references,
+compose an editable board, then use it to guide implementation or compare the
+result. Keep source-backed observations separate from proposed changes. When a
+Markdown brief should contain the board, use the composition skill to create
+its child Canvas, then follow this drawing workflow.
 
 ## Choose the destination
 
@@ -94,6 +105,22 @@ requested freehand ink with ellipses or a bitmap. For diagrams, use suitable
 shapes/text/arrows. Preserve assets, layers and metadata outside the requested
 change. If a successful Canvas cannot open or render, retain it and report the
 remaining review limitation rather than recreating or replacing it.
+
+## Compose with images
+
+Read [Canvas image workflow](references/canvas-images.md) when placing an image
+or arranging a reference/feedback board. Discover Canvas import, `addAssets` and
+image-element support first. Begin activity, import requested images into the
+existing writable Canvas, then register assets and place images together in a
+revision-checked batch. Reuse existing assets when appropriate; preserve the
+returned relative paths, source bytes and unrelated content. Render the saved
+composition before claiming visual quality.
+
+The monochrome wireframe default applies to drawn shapes and text; retain the
+original colors of requested images. Keep callouts editable and group related
+annotations. If the helper lacks image support, report that gap and keep its
+supported drawing tools usable; do not inject image fields through a full-file
+fallback or substitute a Markdown document for the requested Canvas.
 
 ## Prefer native shape labels
 
